@@ -1,0 +1,330 @@
+import mongoose from "mongoose";
+import "dotenv/config";
+import foodModel from "./models/foodModel.js";
+
+const CATEGORIES = [
+    "North Indian", "South Indian", "Street Food", "Biryani",
+    "Chinese", "Desserts", "Beverages", "Thali"
+];
+
+// Base items per category (will be expanded to reach 200)
+const BASE_ITEMS = {
+    "North Indian": [
+        { name: "Butter Chicken", price: 320, rating: 4.8, desc: "Tender chicken pieces simmered in a rich, creamy tomato-based gravy with aromatic spices and butter. A timeless Punjabi classic loved across India." },
+        { name: "Dal Makhani", price: 240, rating: 4.7, desc: "Slow-cooked black lentils and kidney beans in a velvety butter-cream sauce, infused with garlic, ginger, and smoky spices overnight." },
+        { name: "Paneer Tikka Masala", price: 280, rating: 4.6, desc: "Chargrilled paneer cubes tossed in a spiced onion-tomato gravy with capsicum, creating a smoky and tangy vegetarian delight." },
+        { name: "Chole Bhature", price: 180, rating: 4.5, desc: "Spicy chickpea curry served with deep-fried fluffy bread. A hearty North Indian breakfast staple from the streets of Delhi." },
+        { name: "Aloo Gobi", price: 160, rating: 4.3, desc: "Golden potatoes and cauliflower florets stir-fried with turmeric, cumin, and fresh coriander. A comforting home-style sabzi." },
+        { name: "Malai Kofta", price: 260, rating: 4.5, desc: "Deep-fried paneer and potato dumplings served in a luscious cashew-cream gravy with hints of cardamom and saffron." },
+        { name: "Shahi Paneer", price: 270, rating: 4.6, desc: "Soft paneer cubes in a royal Mughlai gravy made with cream, nuts, and aromatic whole spices. A regal vegetarian dish." },
+        { name: "Rajma Chawal", price: 190, rating: 4.4, desc: "Hearty kidney bean curry cooked in a thick onion-tomato masala, served over steaming basmati rice. Pure Punjabi comfort food." },
+        { name: "Tandoori Roti", price: 30, rating: 4.2, desc: "Whole wheat flatbread baked to perfection in a traditional clay tandoor oven. Lightly charred with a soft, chewy centre." },
+        { name: "Naan Basket", price: 80, rating: 4.4, desc: "Assorted tandoor-baked naans — butter, garlic, and plain — soft, fluffy, and perfect for scooping up rich curries." },
+        { name: "Kadhai Paneer", price: 250, rating: 4.5, desc: "Paneer cubes wok-tossed with bell peppers, onions, and freshly ground kadhai spices for a bold, smoky flavour." },
+        { name: "Palak Paneer", price: 230, rating: 4.4, desc: "Creamy spinach puree with soft paneer cubes, flavoured with garlic, green chillies, and a touch of cream." },
+        { name: "Amritsari Kulcha", price: 120, rating: 4.6, desc: "Stuffed bread with spiced potato filling, baked in tandoor and served with tangy chole and pickled onions." },
+        { name: "Chicken Tikka", price: 300, rating: 4.7, desc: "Juicy chicken pieces marinated in yogurt and spices, skewered and grilled in a tandoor until smoky and charred." },
+        { name: "Mutton Rogan Josh", price: 380, rating: 4.8, desc: "Slow-braised lamb in a Kashmiri red chilli and yogurt gravy, aromatic with fennel, cardamom, and cinnamon." },
+        { name: "Paneer Lababdar", price: 260, rating: 4.5, desc: "Rich and creamy paneer curry with a cashew-tomato base, garnished with fresh cream and coriander leaves." },
+        { name: "Jeera Rice", price: 140, rating: 4.2, desc: "Fragrant basmati rice tempered with cumin seeds, bay leaves, and ghee. The perfect accompaniment for any curry." },
+        { name: "Aloo Paratha", price: 90, rating: 4.5, desc: "Whole wheat flatbread stuffed with spiced mashed potatoes, pan-fried until golden. Served with butter and pickle." },
+        { name: "Chicken Korma", price: 310, rating: 4.6, desc: "Succulent chicken in a mild, fragrant gravy of cashew paste, cream, and aromatic spices. A Mughlai masterpiece." },
+        { name: "Mix Veg Curry", price: 180, rating: 4.3, desc: "A medley of seasonal vegetables cooked in a spiced onion-tomato gravy with cumin, coriander, and garam masala." },
+        { name: "Baingan Bharta", price: 170, rating: 4.3, desc: "Smoky fire-roasted eggplant mashed and cooked with onions, tomatoes, green chillies, and fresh coriander." },
+        { name: "Lauki Kofta", price: 200, rating: 4.2, desc: "Bottle gourd dumplings deep-fried and simmered in a creamy tomato-cashew gravy with aromatic spices." },
+        { name: "Tawa Chicken", price: 290, rating: 4.6, desc: "Spicy chicken cooked on a flat iron griddle with onions, capsicum, and a tangy tomato-based masala." },
+        { name: "Methi Malai Chicken", price: 310, rating: 4.7, desc: "Tender chicken pieces in a rich fenugreek-infused cream sauce with cashew paste and mild spices." },
+        { name: "Achari Paneer", price: 240, rating: 4.4, desc: "Paneer cubes cooked in a tangy pickle-spiced gravy with mustard seeds, fenugreek, and nigella." },
+    ],
+    "South Indian": [
+        { name: "Masala Dosa", price: 120, rating: 4.7, desc: "Crispy golden crepe made from fermented rice-lentil batter, filled with spiced potato masala. Served with sambar and coconut chutney." },
+        { name: "Idli Sambar", price: 80, rating: 4.5, desc: "Fluffy steamed rice cakes served with a tangy lentil-vegetable stew and a trio of fresh chutneys. A classic South Indian breakfast." },
+        { name: "Medu Vada", price: 90, rating: 4.4, desc: "Crispy deep-fried lentil doughnuts with a fluffy interior, served with coconut chutney and hot sambar." },
+        { name: "Uttapam", price: 110, rating: 4.3, desc: "Thick rice-lentil pancake topped with onions, tomatoes, green chillies, and fresh coriander. A wholesome South Indian treat." },
+        { name: "Rava Dosa", price: 130, rating: 4.5, desc: "Lacy, crispy crepe made from semolina, rice flour, and all-purpose flour. Thin, crunchy, and absolutely irresistible." },
+        { name: "Hyderabadi Chicken 65", price: 280, rating: 4.7, desc: "Deep-fried chicken pieces tossed in a fiery mix of red chillies, curry leaves, and yogurt. A legendary Hyderabadi appetizer." },
+        { name: "Mysore Masala Dosa", price: 140, rating: 4.6, desc: "Crispy dosa smeared with spicy red chutney inside, stuffed with potato masala. Extra spicy and extra delicious." },
+        { name: "Pongal", price: 100, rating: 4.3, desc: "Creamy comfort dish of rice and moong dal cooked with black pepper, cumin, and ghee. Topped with crispy cashews." },
+        { name: "Appam with Stew", price: 160, rating: 4.5, desc: "Lacy fermented rice pancakes with soft centres, served with a fragrant Kerala vegetable stew in coconut milk." },
+        { name: "Pesarattu", price: 110, rating: 4.3, desc: "Andhra-style green gram crepe made with whole moong dal, served with ginger chutney and upma." },
+        { name: "Filter Coffee", price: 50, rating: 4.8, desc: "Strong decoction coffee brewed with a traditional South Indian filter, mixed with hot frothy milk and sugar." },
+        { name: "Lemon Rice", price: 100, rating: 4.2, desc: "Tangy rice tempered with mustard seeds, curry leaves, peanuts, and fresh lemon juice. Bright and zesty." },
+        { name: "Curd Rice", price: 90, rating: 4.3, desc: "Cool yogurt rice tempered with mustard, urad dal, and curry leaves. Perfect comfort food for hot days." },
+        { name: "Bisi Bele Bath", price: 130, rating: 4.4, desc: "Karnataka's signature one-pot meal of rice, lentils, and vegetables cooked with a special spice blend and tamarind." },
+        { name: "Set Dosa", price: 110, rating: 4.3, desc: "Soft, spongy mini dosas served in a set of three with sambar and chutney. Light and fluffy breakfast favourite." },
+        { name: "Kerala Parotta", price: 60, rating: 4.5, desc: "Flaky, layered flatbread from Kerala, made by stretching and folding dough. Wonderfully crispy and soft." },
+        { name: "Chicken Chettinad", price: 320, rating: 4.7, desc: "Fiery chicken curry from Tamil Nadu's Chettinad region, loaded with freshly ground black pepper and star anise." },
+        { name: "Malabar Fish Curry", price: 300, rating: 4.6, desc: "Fresh fish simmered in a tangy coconut-based curry with kokum, raw mango, and Kerala spices." },
+        { name: "Puttu & Kadala", price: 120, rating: 4.4, desc: "Steamed rice flour cylinders layered with coconut, served with spicy black chickpea curry. A Kerala classic." },
+        { name: "Rasam", price: 70, rating: 4.3, desc: "Hot and tangy South Indian soup made with tamarind, tomatoes, pepper, and aromatic spices. Soul-warming comfort." },
+        { name: "Onion Rava Dosa", price: 140, rating: 4.5, desc: "Crispy semolina crepe loaded with chopped onions, green chillies, and curry leaves. Crunchy in every bite." },
+        { name: "Sambar Rice", price: 120, rating: 4.3, desc: "Steamed rice mixed with hearty sambar, tempered with ghee, mustard seeds, and curry leaves. Simple and satisfying." },
+        { name: "Coconut Chutney", price: 40, rating: 4.2, desc: "Fresh coconut ground with green chillies, tempered with mustard seeds and curry leaves. Essential South Indian condiment." },
+        { name: "Dosa Platter", price: 220, rating: 4.6, desc: "A trio of dosas — plain, masala, and Mysore — served with sambar, coconut chutney, and tomato chutney." },
+        { name: "Prawn Ghee Roast", price: 350, rating: 4.8, desc: "Mangalorean-style prawns roasted in ghee with a fiery red chilli paste, garlic, and tangy tamarind." },
+    ],
+    "Street Food": [
+        { name: "Pani Puri", price: 60, rating: 4.7, desc: "Crispy hollow puris filled with spiced potato, chickpeas, and tangy tamarind water. The ultimate Indian street food experience." },
+        { name: "Vada Pav", price: 40, rating: 4.6, desc: "Mumbai's iconic street burger — spicy potato fritter sandwiched in a soft bun with chutneys and fried green chilli." },
+        { name: "Pav Bhaji", price: 120, rating: 4.7, desc: "Buttery mashed vegetable curry served with toasted butter-laden pav buns, topped with onions and lemon. Pure Mumbai magic." },
+        { name: "Samosa", price: 30, rating: 4.5, desc: "Crispy golden pastry triangles filled with spiced potatoes, peas, and cumin. India's most beloved tea-time snack." },
+        { name: "Aloo Tikki", price: 50, rating: 4.4, desc: "Crispy pan-fried potato patties served with sweet tamarind chutney, mint chutney, and tangy sev topping." },
+        { name: "Bhel Puri", price: 70, rating: 4.5, desc: "Crunchy puffed rice mixed with sev, onions, tomatoes, and tangy-sweet chutneys. A refreshing Chaat classic." },
+        { name: "Sev Puri", price: 80, rating: 4.4, desc: "Crispy flat puris topped with diced potatoes, onions, three types of chutney, and a generous shower of sev." },
+        { name: "Dahi Puri", price: 80, rating: 4.5, desc: "Hollow puris filled with spiced potatoes, sweet curd, tamarind chutney, and crunchy sev. Sweet, tangy, and crunchy." },
+        { name: "Ragda Pattice", price: 100, rating: 4.4, desc: "Crispy potato patties topped with spicy dried pea curry, chutneys, and sev. A beloved Mumbai street food hybrid." },
+        { name: "Kathi Roll", price: 130, rating: 4.5, desc: "Flaky paratha wrapped around spiced grilled chicken or paneer with onions, chutney, and a squeeze of lemon." },
+        { name: "Dabeli", price: 50, rating: 4.4, desc: "Kutchi snack with spiced potato filling in a bun, layered with pomegranate, peanuts, and garlic chutney. Sweet and spicy." },
+        { name: "Momos (Veg)", price: 80, rating: 4.5, desc: "Steamed Tibetan-style dumplings filled with minced vegetables and spices, served with fiery red chilli garlic chutney." },
+        { name: "Momos (Chicken)", price: 120, rating: 4.6, desc: "Juicy steamed dumplings filled with seasoned minced chicken, served with a spicy schezwan-chilli dipping sauce." },
+        { name: "Chole Tikki Chaat", price: 90, rating: 4.5, desc: "Crispy aloo tikki topped with spicy chole, yogurt, tamarind chutney, mint chutney, and crunchy sev." },
+        { name: "Papdi Chaat", price: 80, rating: 4.4, desc: "Crispy fried dough wafers (papdi) topped with boiled potatoes, chickpeas, yogurt, and tangy chutneys." },
+        { name: "Egg Roll", price: 100, rating: 4.3, desc: "Flaky paratha wrapped around a spiced omelette with onions, green chutney, and a squeeze of ketchup." },
+        { name: "Jhal Muri", price: 50, rating: 4.3, desc: "Kolkata's signature puffed rice snack mixed with mustard oil, green chillies, peanuts, and fresh coconut." },
+        { name: "Misal Pav", price: 110, rating: 4.6, desc: "Spicy Maharashtrian sprout curry topped with farsan, onions, and lemon, served with toasted pav. A flavour bomb." },
+        { name: "Ram Ladoo", price: 40, rating: 4.2, desc: "Crispy deep-fried moong dal fritters served with shredded radish and tangy green chutney. A Delhi street classic." },
+        { name: "Gol Gappe", price: 60, rating: 4.6, desc: "Delhi's version of pani puri with extra tangy jaljeera water and spiced chickpea-potato filling. Addictively good." },
+        { name: "Tandoori Momos", price: 140, rating: 4.7, desc: "Pan-fried momos glazed with tandoori spices and butter, charred to perfection. A modern street food sensation." },
+        { name: "Frankie Roll", price: 110, rating: 4.3, desc: "Mumbai-style wrap with spicy paneer or chicken filling, rolled in a soft roti with onions and sauces." },
+        { name: "Bread Pakora", price: 40, rating: 4.2, desc: "Bread slices stuffed with spiced potato, dipped in gram flour batter, and deep-fried until golden and crispy." },
+        { name: "Chilli Potato", price: 130, rating: 4.5, desc: "Crispy fried potato fingers tossed in an Indo-Chinese sauce with garlic, chillies, soy, and spring onions." },
+        { name: "Corn Chaat", price: 80, rating: 4.3, desc: "Sweet corn kernels tossed with butter, chaat masala, lemon juice, and finely chopped onions. Quick and tasty." },
+    ],
+    "Biryani": [
+        { name: "Hyderabadi Chicken Biryani", price: 280, rating: 4.8, desc: "Aromatic basmati rice layered with spiced chicken, fried onions, saffron, and herbs. Slow-cooked in a sealed pot (dum)." },
+        { name: "Lucknowi Mutton Biryani", price: 350, rating: 4.8, desc: "Awadhi-style biryani with tender mutton cooked separately and layered with fragrant rice, rose water, and kewra." },
+        { name: "Veg Dum Biryani", price: 200, rating: 4.5, desc: "Mixed vegetables and paneer layered with saffron-infused basmati rice, slow-cooked on dum with whole spices." },
+        { name: "Egg Biryani", price: 180, rating: 4.4, desc: "Flavourful biryani with boiled eggs nestled in spiced rice cooked with onions, tomatoes, and biryani masala." },
+        { name: "Kolkata Chicken Biryani", price: 260, rating: 4.6, desc: "Kolkata's signature biryani with chicken, potatoes, and eggs, flavoured with rose water and subtle spices." },
+        { name: "Paneer Biryani", price: 220, rating: 4.5, desc: "Marinated paneer cubes layered with aromatic basmati rice, caramelised onions, and saffron milk." },
+        { name: "Keema Biryani", price: 260, rating: 4.6, desc: "Minced mutton cooked with aromatic spices, layered with rice and garnished with fried onions, mint, and boiled eggs." },
+        { name: "Prawn Biryani", price: 320, rating: 4.7, desc: "Succulent prawns marinated in coastal spices, layered with basmati rice and slow-cooked to perfection." },
+        { name: "Thalassery Biryani", price: 300, rating: 4.6, desc: "Kerala Malabar-style biryani made with short-grain kaima rice, chicken, and a unique blend of Malabar spices." },
+        { name: "Mushroom Biryani", price: 200, rating: 4.3, desc: "Earthy mushrooms cooked with aromatic spices and layered with fragrant basmati rice and caramelised onions." },
+        { name: "Fish Biryani", price: 300, rating: 4.5, desc: "Fresh fish marinated in tangy spices, layered with rice and cooked on dum with coconut milk and mint." },
+        { name: "Ambur Biryani", price: 280, rating: 4.6, desc: "Tamil Nadu's famous biryani with seeraga samba rice, tender meat, and a distinctive flavour from dhaniya-based masala." },
+        { name: "Chettinad Biryani", price: 290, rating: 4.6, desc: "Fiery biryani from the Chettinad region with freshly ground spices, star anise, kalpasi, and tender chicken." },
+        { name: "Sindhi Biryani", price: 270, rating: 4.5, desc: "Spicy and tangy biryani with potatoes, tomatoes, green chillies, and aromatic rice cooked Sindhi-style." },
+        { name: "Raita", price: 50, rating: 4.2, desc: "Cool whipped yogurt mixed with cucumber, onions, and roasted cumin. The perfect cooling companion for biryani." },
+        { name: "Chicken Dum Biryani", price: 260, rating: 4.7, desc: "Succulent chicken pieces marinated overnight, layered with basmati rice, and slow-cooked in a sealed copper pot." },
+        { name: "Salan", price: 80, rating: 4.3, desc: "Traditional Hyderabadi peanut-sesame curry with a tangy and mildly spicy flavour. The classic biryani accompaniment." },
+        { name: "Double Ka Meetha", price: 100, rating: 4.4, desc: "Hyderabadi bread pudding made with fried bread slices soaked in saffron-cardamom milk and topped with dry fruits." },
+        { name: "Garlic Naan (Biryani Combo)", price: 50, rating: 4.2, desc: "Soft garlic-butter naan, perfect as an extra bread option alongside your favourite biryani and gravy." },
+        { name: "Mirchi Ka Salan", price: 90, rating: 4.4, desc: "Whole green chillies in a rich peanut-sesame-coconut gravy. The authentic Hyderabadi biryani side dish." },
+        { name: "Boneless Chicken Biryani", price: 280, rating: 4.6, desc: "Tender boneless chicken pieces layered with aromatic rice, saffron, and fried onions. Easy to eat, hard to forget." },
+        { name: "Lamb Shank Biryani", price: 450, rating: 4.9, desc: "Premium biryani featuring a whole slow-cooked lamb shank, layered with aged basmati rice and royal spices." },
+        { name: "Tahiri (Sweet Biryani)", price: 160, rating: 4.2, desc: "Mildly sweet vegetable biryani with carrots, peas, and paneer, flavoured with sugar, saffron, and cardamom." },
+        { name: "Schezwan Fried Rice", price: 170, rating: 4.3, desc: "Indo-Chinese style fried rice tossed in spicy schezwan sauce with vegetables and soy. Smoky wok flavour." },
+        { name: "Jeera Pulao", price: 130, rating: 4.2, desc: "Aromatic basmati rice cooked with cumin seeds, whole spices, and ghee. Light and fragrant base for any curry." },
+    ],
+    "Chinese": [
+        { name: "Veg Manchurian", price: 160, rating: 4.5, desc: "Crispy vegetable balls tossed in a tangy, spicy soy-chilli-garlic sauce. The king of Indo-Chinese cuisine." },
+        { name: "Chicken Manchurian", price: 220, rating: 4.6, desc: "Juicy chicken pieces battered and fried, then tossed in a glossy Indo-Chinese sauce with spring onions." },
+        { name: "Hakka Noodles", price: 150, rating: 4.4, desc: "Stir-fried noodles tossed with crunchy vegetables, soy sauce, and a hint of vinegar. Classic Indian-Chinese style." },
+        { name: "Chilli Chicken", price: 230, rating: 4.7, desc: "Crispy fried chicken pieces wok-tossed with fiery green chillies, garlic, soy sauce, and capsicum." },
+        { name: "Fried Rice", price: 150, rating: 4.3, desc: "Wok-fried basmati rice with mixed vegetables, eggs, soy sauce, and aromatic sesame oil. Quick and flavourful." },
+        { name: "Spring Rolls (Veg)", price: 120, rating: 4.4, desc: "Crispy golden rolls stuffed with a mix of shredded cabbage, carrots, and noodles. Served with sweet chilli sauce." },
+        { name: "Paneer Chilli", price: 200, rating: 4.5, desc: "Crispy paneer cubes tossed with bell peppers, onions, and a spicy Indo-Chinese chilli-soy sauce." },
+        { name: "Sweet Corn Soup", price: 100, rating: 4.3, desc: "Silky sweet corn soup with egg ribbons, gently spiced with white pepper and garnished with spring onions." },
+        { name: "Dragon Chicken", price: 250, rating: 4.6, desc: "Twice-fried chicken coated in a fiery red dragon sauce with dried red chillies and Sichuan pepper." },
+        { name: "Mushroom Chilli", price: 180, rating: 4.4, desc: "Button mushrooms battered, fried, and tossed in a spicy chilli-garlic sauce with capsicum and onions." },
+        { name: "Honey Chilli Potato", price: 160, rating: 4.6, desc: "Crispy potato fingers glazed in a sweet and spicy honey-chilli sauce with sesame seeds. Addictive snack." },
+        { name: "Manchow Soup", price: 110, rating: 4.4, desc: "Spicy Indo-Chinese soup loaded with vegetables and topped with crispy fried noodles. Thick, hot, and comforting." },
+        { name: "Schezwan Noodles", price: 170, rating: 4.5, desc: "Noodles stir-fried in fiery schezwan paste with vegetables. Bold, smoky, and packed with chilli heat." },
+        { name: "Chicken Lollipop", price: 240, rating: 4.6, desc: "Chicken winglets frenched into lollipop shape, marinated and fried crispy, served with spicy red sauce." },
+        { name: "Gobi Manchurian", price: 150, rating: 4.5, desc: "Crispy cauliflower florets in a tangy-spicy Manchurian sauce. India's favourite Indo-Chinese vegetarian starter." },
+        { name: "Hot & Sour Soup", price: 100, rating: 4.3, desc: "Tangy and peppery soup with tofu, mushrooms, and vegetables. The perfect warming starter on rainy days." },
+        { name: "Crispy Honey Chicken", price: 260, rating: 4.6, desc: "Crunchy fried chicken strips drizzled with honey-soy glaze and toasted sesame seeds. Sweet meets spicy." },
+        { name: "Egg Fried Rice", price: 160, rating: 4.3, desc: "Classic fried rice with scrambled eggs, vegetables, and soy sauce. A satisfying one-bowl meal." },
+        { name: "Chicken 65", price: 250, rating: 4.7, desc: "Iconic spicy deep-fried chicken from South India, tossed with curry leaves, dried red chillies, and yogurt." },
+        { name: "Triple Schezwan Rice", price: 200, rating: 4.5, desc: "Rice, noodles, and Manchurian balls combined with fiery schezwan sauce. An Indo-Chinese triple threat." },
+        { name: "Baby Corn Chilli", price: 170, rating: 4.3, desc: "Tender baby corn pieces battered and stir-fried in a chilli-garlic-soy sauce with colourful bell peppers." },
+        { name: "Veg Wonton Soup", price: 120, rating: 4.3, desc: "Delicate vegetable-filled wontons in a clear aromatic broth with hints of ginger, garlic, and sesame." },
+        { name: "Szechuan Chicken", price: 240, rating: 4.5, desc: "Wok-fried chicken in a bold Szechuan sauce with dried chillies, Sichuan peppercorns, and garlic." },
+        { name: "Veg Crispy", price: 150, rating: 4.3, desc: "Assorted vegetables coated in a light batter and deep-fried until golden, served with schezwan dip." },
+        { name: "Paneer Fried Rice", price: 180, rating: 4.4, desc: "Wok-fried rice with cubed paneer, mixed vegetables, soy sauce, and a touch of chilli garlic paste." },
+    ],
+    "Desserts": [
+        { name: "Gulab Jamun", price: 80, rating: 4.7, desc: "Soft, melt-in-the-mouth milk solid dumplings deep-fried and soaked in warm rose-cardamom sugar syrup. A timeless classic." },
+        { name: "Rasgulla", price: 80, rating: 4.6, desc: "Spongy white cheese balls soaked in light sugar syrup. A beloved Bengali sweet that's soft and refreshing." },
+        { name: "Jalebi", price: 60, rating: 4.5, desc: "Crispy, pretzel-shaped deep-fried batter soaked in saffron sugar syrup. Best served hot and dripping with sweetness." },
+        { name: "Ras Malai", price: 120, rating: 4.8, desc: "Flattened paneer discs soaked in thickened, sweet, saffron-cardamom-flavoured milk. Garnished with chopped pistachios." },
+        { name: "Kulfi Falooda", price: 130, rating: 4.7, desc: "Traditional Indian ice cream made with condensed milk and pistachios, served over rose falooda noodles and basil seeds." },
+        { name: "Gajar Ka Halwa", price: 100, rating: 4.6, desc: "Grated carrots slow-cooked in milk and ghee with cardamom, topped with almonds and cashews. Warm winter favourite." },
+        { name: "Kaju Katli", price: 150, rating: 4.7, desc: "Diamond-shaped cashew fudge with a delicate silver foil topping. India's most popular festive mithai." },
+        { name: "Motichoor Ladoo", price: 90, rating: 4.5, desc: "Tiny boondi pearls bound together with sugar syrup, cardamom, and saffron into soft, melt-in-mouth round sweets." },
+        { name: "Rabri", price: 100, rating: 4.5, desc: "Rich thickened sweetened milk with layers of malai, flavoured with cardamom, saffron, and topped with nuts." },
+        { name: "Shahi Tukda", price: 110, rating: 4.6, desc: "Fried bread slices soaked in saffron-cardamom syrup, topped with thickened rabri and chopped dry fruits. Royal and indulgent." },
+        { name: "Mysore Pak", price: 100, rating: 4.5, desc: "Rich and crumbly sweet made from gram flour, ghee, and sugar. A legendary Karnataka delicacy." },
+        { name: "Phirni", price: 80, rating: 4.4, desc: "Chilled ground rice pudding set in clay pots, flavoured with cardamom, saffron, and topped with pistachios." },
+        { name: "Sandesh", price: 90, rating: 4.5, desc: "Delicate Bengali sweet made from fresh paneer and sugar, lightly flavoured with cardamom or rosewater." },
+        { name: "Imarti", price: 70, rating: 4.3, desc: "Flower-shaped crispy sweet made from urad dal batter, deep-fried and soaked in saffron sugar syrup." },
+        { name: "Malpua", price: 90, rating: 4.5, desc: "Sweetened pancakes made from flour and milk, deep-fried and soaked in cardamom-saffron sugar syrup. A festive treat." },
+        { name: "Kheer", price: 90, rating: 4.5, desc: "Creamy rice pudding slow-cooked with milk, sugar, cardamom, and garnished with raisins, almonds, and pistachios." },
+        { name: "Cham Cham", price: 90, rating: 4.4, desc: "Oblong-shaped Bengali sweet made from paneer, soaked in sugar syrup, and rolled in coconut and khoya." },
+        { name: "Laddu Combo", price: 120, rating: 4.5, desc: "Assorted laddu box featuring Motichoor, Besan, and Boondi varieties. Perfect for sharing or gifting." },
+        { name: "Pista Kulfi", price: 80, rating: 4.6, desc: "Dense Indian ice cream packed with ground pistachios, cardamom, and saffron. Creamier than regular ice cream." },
+        { name: "Badam Halwa", price: 130, rating: 4.6, desc: "Rich almond pudding slow-cooked with ghee, sugar, and saffron until thick and glistening. A royal Mughlai dessert." },
+        { name: "Chum Chum", price: 80, rating: 4.3, desc: "Soft cylindrical paneer sweet, dipped in sugar syrup and coated with desiccated coconut. Bengali sweetshop staple." },
+        { name: "Coconut Barfi", price: 70, rating: 4.3, desc: "Sweet coconut fudge made with freshly grated coconut, condensed milk, and cardamom. Simple and delightful." },
+        { name: "Paan Ice Cream", price: 90, rating: 4.4, desc: "Unique Indian ice cream infused with betel leaf (paan) flavour, gulkand, and fennel seeds. Refreshing and aromatic." },
+        { name: "Soan Papdi", price: 80, rating: 4.2, desc: "Flaky, melt-in-mouth sweet made from gram flour and sugar, layered with cardamom and pistachios." },
+        { name: "Mishti Doi", price: 70, rating: 4.6, desc: "Bengali sweetened yogurt set in clay pots, caramelised with jaggery. Creamy, tangy, and perfectly sweet." },
+    ],
+    "Beverages": [
+        { name: "Masala Chai", price: 30, rating: 4.6, desc: "Strong Indian tea brewed with ginger, cardamom, cloves, and cinnamon in frothy milk. The nation's favourite drink." },
+        { name: "Mango Lassi", price: 80, rating: 4.7, desc: "Thick and creamy yogurt smoothie blended with ripe Alphonso mango pulp and a touch of cardamom." },
+        { name: "Sweet Lassi", price: 60, rating: 4.5, desc: "Rich and creamy churned yogurt drink sweetened with sugar and flavoured with cardamom. Cool and refreshing." },
+        { name: "Salted Lassi", price: 50, rating: 4.3, desc: "Traditional Punjabi churned yogurt drink with a pinch of salt, roasted cumin, and fresh mint." },
+        { name: "Jaljeera", price: 40, rating: 4.4, desc: "Tangy and spicy cumin-mint cooler with lemon, black salt, and a kick of black pepper. Ultimate summer refresher." },
+        { name: "Aam Panna", price: 50, rating: 4.5, desc: "Raw mango cooler made with roasted green mangoes, mint, cumin, and jaggery. Nature's heat stroke remedy." },
+        { name: "Thandai", price: 90, rating: 4.6, desc: "Festive chilled milk drink blended with almonds, fennel seeds, rose petals, poppy seeds, and saffron." },
+        { name: "Badam Milk", price: 70, rating: 4.4, desc: "Warm or cold milk enriched with ground almonds, saffron strands, and cardamom. Nutritious and comforting." },
+        { name: "Rose Sharbat", price: 40, rating: 4.3, desc: "Vibrant pink cooler made with rose syrup, lemon juice, and sabja seeds. Fragrant and refreshing." },
+        { name: "Kokum Sharbat", price: 50, rating: 4.4, desc: "Tangy Konkani drink made from kokum fruit with cumin and jaggery. A natural digestive and coolant." },
+        { name: "Nimbu Pani", price: 30, rating: 4.3, desc: "Classic Indian lemonade with fresh lime juice, sugar, a pinch of salt, and crushed mint leaves." },
+        { name: "Buttermilk (Chaas)", price: 40, rating: 4.4, desc: "Churned spiced yogurt drink with cumin, curry leaves, ginger, and green chilli. Light and digestive." },
+        { name: "Cold Coffee", price: 100, rating: 4.5, desc: "Thick blended iced coffee with milk, sugar, and a scoop of vanilla ice cream. Creamy and indulgent." },
+        { name: "Fresh Sugarcane Juice", price: 50, rating: 4.5, desc: "Freshly extracted sugarcane juice with ginger and lemon. Natural energy booster and a street-side favourite." },
+        { name: "Kesar Pista Shake", price: 120, rating: 4.6, desc: "Luxurious milkshake blended with saffron, pistachios, and ice cream. Rich, creamy, and aromatic." },
+        { name: "Sol Kadhi", price: 60, rating: 4.3, desc: "Konkani digestive drink made from kokum and coconut milk, seasoned with garlic and cumin. Beautifully pink." },
+        { name: "Jigarthanda", price: 80, rating: 4.5, desc: "Madurai's famous cold drink with almond gum, sarsaparilla syrup, milk, and ice cream. Utterly unique." },
+        { name: "Masala Lemonade", price: 50, rating: 4.4, desc: "Zesty lemonade elevated with chaat masala, black salt, and crushed mint. Tangy with a spicy twist." },
+        { name: "Paan Shake", price: 90, rating: 4.3, desc: "Creamy milkshake with betel leaf extract, gulkand, and crushed fennel seeds. A dessert in a glass." },
+        { name: "Fresh Lime Soda", price: 40, rating: 4.3, desc: "Sparkling soda with fresh lime juice. Available sweet or salted. The simplest cooler that never fails." },
+        { name: "Kashmiri Kahwa", price: 70, rating: 4.5, desc: "Traditional Kashmiri green tea brewed with saffron, cinnamon, cardamom, and crushed almonds. Elegantly aromatic." },
+        { name: "Madras Filter Coffee", price: 60, rating: 4.7, desc: "Authentic South Indian coffee brewed in a traditional brass filter with chicory. Strong, frothy, and aromatic." },
+        { name: "Sitaphal Shake", price: 100, rating: 4.4, desc: "Creamy milkshake made with fresh custard apple pulp, milk, and a touch of sugar. Seasonal and irresistible." },
+        { name: "Grape Sharbat", price: 50, rating: 4.2, desc: "Deep purple cooler made from fresh grape juice with lime and black salt. Sweet, tangy, and refreshing." },
+        { name: "Banana Shake", price: 70, rating: 4.3, desc: "Thick and creamy shake blended with ripe bananas, chilled milk, honey, and a pinch of cardamom." },
+    ],
+    "Thali": [
+        { name: "Rajasthani Thali", price: 350, rating: 4.8, desc: "Royal platter with dal baati churma, gatte ki sabzi, ker sangri, bajra roti, rice, pickle, and papad." },
+        { name: "Gujarati Thali", price: 300, rating: 4.7, desc: "Sweet and savoury platter with dal, kadhi, shak, rotli, rice, khichdi, papad, pickle, and a sweet dish." },
+        { name: "South Indian Thali", price: 250, rating: 4.6, desc: "Banana leaf meal with sambar, rasam, kootu, poriyal, rice, appalam, pickle, curd, and payasam." },
+        { name: "Punjabi Thali", price: 320, rating: 4.7, desc: "Hearty spread with butter chicken/paneer, dal makhani, raita, naan, rice, salad, and gulab jamun." },
+        { name: "Bengali Thali", price: 330, rating: 4.6, desc: "Multi-course meal with machher jhol, shukto, dal, bhaja, rice, chutney, papad, and mishti doi." },
+        { name: "Maharashtrian Thali", price: 280, rating: 4.5, desc: "Traditional platter with varan bhaat, usal, bhaji, chapati, sol kadhi, pickle, and shrikhand." },
+        { name: "Mini Meals (South)", price: 180, rating: 4.4, desc: "Compact South Indian meal with rice, sambar, rasam, one curry, curd, pickle, and appalam." },
+        { name: "North Indian Veg Thali", price: 250, rating: 4.5, desc: "Complete vegetarian spread with two sabzis, dal, raita, roti, rice, pickle, papad, and a sweet." },
+        { name: "Non-Veg Deluxe Thali", price: 400, rating: 4.8, desc: "Premium platter with butter chicken, mutton curry, biryani, naan, raita, salad, and dessert." },
+        { name: "Chettinad Thali", price: 320, rating: 4.6, desc: "Spicy Tamil Nadu thali with Chettinad chicken, kuzhambu, rasam, poriyal, rice, appalam, and payasam." },
+        { name: "Kashmiri Wazwan Thali", price: 450, rating: 4.9, desc: "Royal Kashmiri feast with rogan josh, yakhni, dum aloo, haak, saffron rice, and phirni." },
+        { name: "Kerala Sadya Thali", price: 300, rating: 4.7, desc: "Traditional Onam feast on banana leaf with avial, olan, thoran, sambar, rasam, rice, and payasam." },
+        { name: "Jain Thali", price: 280, rating: 4.4, desc: "Pure Jain meal without onion and garlic — dal, two sabzis, roti, rice, papad, pickle, and sweet." },
+        { name: "Street Food Thali", price: 220, rating: 4.5, desc: "Fun platter featuring pani puri, samosa, aloo tikki, chole, dahi bhalla, and jalebi. All favourites in one." },
+        { name: "Lucknowi Thali", price: 380, rating: 4.7, desc: "Awadhi feast with galouti kebab, korma, biryani, sheermal, raita, and shahi tukda dessert." },
+        { name: "Breakfast Thali", price: 180, rating: 4.4, desc: "Morning special with poha, upma, idli, vada, chutney, and a cup of masala chai." },
+        { name: "Diet Thali", price: 220, rating: 4.3, desc: "Health-conscious meal with brown rice, grilled paneer, steamed vegetables, dal, salad, and curd." },
+        { name: "Kids Thali", price: 180, rating: 4.4, desc: "Child-friendly platter with mini paratha, paneer butter masala, dal, rice, fries, and ice cream." },
+        { name: "Fish Thali", price: 350, rating: 4.6, desc: "Coastal feast with fried fish, fish curry, rice, sol kadhi, salad, chapati, pickle, and coconut sweet." },
+        { name: "Biryani Thali", price: 300, rating: 4.6, desc: "Complete biryani meal with choice biryani, raita, salan, onion-lemon salad, and gulab jamun." },
+        { name: "Festive Special Thali", price: 420, rating: 4.8, desc: "Grand celebration platter with paneer tikka, dal makhani, biryani, naan, 3 sweets, and special drink." },
+        { name: "Hyderabadi Thali", price: 350, rating: 4.7, desc: "Nizami spread with biryani, mirchi ka salan, double ka meetha, raita, and Hyderabadi dal." },
+        { name: "Executive Lunch Thali", price: 250, rating: 4.4, desc: "Office-friendly complete meal with roti, rice, dal, two curries, salad, and buttermilk." },
+        { name: "Combo Thali for Two", price: 500, rating: 4.6, desc: "Sharing platter for two with assorted starters, two curries, biryani, naan, dessert, and beverages." },
+        { name: "Royal Mughlai Thali", price: 450, rating: 4.8, desc: "Opulent spread with seekh kebab, shahi paneer, biryani, roomali roti, raita, and firni." },
+    ]
+};
+
+// Image URLs from free stock photos (food categories)
+const IMG = {
+    "North Indian": [
+        "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1606491956689-2ea866880049?w=400&h=400&fit=crop",
+    ],
+    "South Indian": [
+        "https://images.unsplash.com/photo-1630383249896-424e482df921?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1668236543090-82eb5eadfdbb?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1567337710282-00832b415979?w=400&h=400&fit=crop",
+    ],
+    "Street Food": [
+        "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1606491956689-2ea866880049?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1567337710282-00832b415979?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&h=400&fit=crop",
+    ],
+    "Biryani": [
+        "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1642821373181-696a54913e93?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=400&h=400&fit=crop",
+    ],
+    "Chinese": [
+        "https://images.unsplash.com/photo-1569058242567-93de6f36f8e6?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1552611052-33e04de1b100?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1541014741259-de529411b96a?w=400&h=400&fit=crop",
+    ],
+    "Desserts": [
+        "https://images.unsplash.com/photo-1666190059764-441ac427ed6e?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=400&fit=crop",
+    ],
+    "Beverages": [
+        "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1544252890-c3e95e867348?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1497515114889-1c06568aaab7?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1587734195503-904fca47e0e9?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=400&fit=crop",
+    ],
+    "Thali": [
+        "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1567337710282-00832b415979?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1606491956689-2ea866880049?w=400&h=400&fit=crop",
+    ],
+};
+
+async function seed() {
+    try {
+        await mongoose.connect(process.env.MONGO_URL);
+        console.log("Connected to MongoDB");
+
+        // Remove all existing food items
+        const deleted = await foodModel.deleteMany({});
+        console.log(`Deleted ${deleted.deletedCount} existing items`);
+
+        // Build items array
+        const items = [];
+        for (const cat of CATEGORIES) {
+            const catItems = BASE_ITEMS[cat];
+            const catImages = IMG[cat];
+            for (let i = 0; i < catItems.length; i++) {
+                const item = catItems[i];
+                items.push({
+                    name: item.name,
+                    description: item.desc,
+                    price: item.price,
+                    category: cat,
+                    rating: item.rating,
+                    image: catImages[i % catImages.length],
+                });
+            }
+        }
+
+        console.log(`Inserting ${items.length} items...`);
+        await foodModel.insertMany(items);
+        console.log(`Successfully seeded ${items.length} food items!`);
+
+        await mongoose.disconnect();
+        console.log("Done!");
+        process.exit(0);
+    } catch (error) {
+        console.error("Seed error:", error);
+        process.exit(1);
+    }
+}
+
+seed();
