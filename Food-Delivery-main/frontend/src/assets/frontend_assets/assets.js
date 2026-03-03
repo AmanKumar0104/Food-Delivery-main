@@ -105,7 +105,7 @@ export const menu_list = [
     },
     {
         menu_name: "Desserts",
-        menu_image: "https://images.unsplash.com/photo-1666190059764-441ac427ed6e?w=200&h=200&fit=crop"
+        menu_image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=200&h=200&fit=crop"
     },
     {
         menu_name: "Beverages",
