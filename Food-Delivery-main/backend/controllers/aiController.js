@@ -17,7 +17,7 @@ const chatWithAI = async (req, res) => {
     // Fetch the current menu so the AI knows what's available
     const foods = await foodModel.find({});
     const menuSummary = foods
-      .map((f) => `• ${f.name} ($${f.price}) — ${f.category}: ${f.description}`)
+      .map((f) => `• ${f.name} (₹${f.price}) — ${f.category}: ${f.description}`)
       .join("\n");
 
     const systemPrompt = `You are "Tomato AI", a friendly and knowledgeable food-ordering assistant for the TOMATO food delivery app.
@@ -31,12 +31,13 @@ RULES:
 - Be enthusiastic about food! Use occasional emojis 🍕🌮🍜
 - If user asks about something not on the menu, say it's not available but suggest alternatives.
 - Never discuss topics unrelated to food or this restaurant.
-- Format prices with $ sign.`;
+- Format prices with ₹ sign.`;
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     // Build conversation history for multi-turn
     const contents = [];
+    // Combine system prompt with instructions as the first message
     contents.push({ role: "user", parts: [{ text: systemPrompt }] });
     contents.push({
       role: "model",
@@ -105,7 +106,7 @@ Rules:
 - The "reason" should explain why this dish matches the search (e.g., "Spicy kick with bold flavors").
 - Consider flavor profiles, ingredients, dietary preferences, and price when matching.`;
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const result = await model.generateContent(prompt);
     let text = result.response.text().trim();
 
@@ -191,7 +192,7 @@ Rules:
 - Base reasoning on taste patterns from their history.
 - Consider variety — suggest from different categories.`;
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const result = await model.generateContent(prompt);
     let text = result.response.text().trim();
     text = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
