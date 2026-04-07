@@ -9,10 +9,7 @@ const Footer = () => {
         <div className="footer-content-left">
           <img src={assets.logo} alt="" />
           <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque
-            nostrum iure suscipit maiores non harum incidunt unde magnam
-            molestias ipsum qui vel aut natus aspernatur ipsa dignissimos,
-            numquam assumenda deserunt.
+            Thank you for visiting our website. We are committed to providing quality services and delivering the best experience to our users. Stay connected with us for more updates and innovations.
           </p>
           <div className="footer-social-icons">
             <img src={assets.facebook_icon} alt="" />
@@ -32,8 +29,8 @@ const Footer = () => {
         <div className="footer-content-right">
           <h2>Get in touch</h2>
           <ul>
-            <li>+92-308-4900522</li>
-            <li>contact@tomato.com</li>
+            <li>+91-7667753470</li>
+            <li>prajapatiamanap123@gmail.com</li>
           </ul>
         </div>
       </div>

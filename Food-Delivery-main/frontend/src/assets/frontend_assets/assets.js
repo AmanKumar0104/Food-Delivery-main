@@ -79,74 +79,50 @@ export const assets = {
     profile_icon,
     logout_icon,
     bag_icon,
-    parcel_icon
+    parcel_icon,
+    food_images: [
+        food_1, food_2, food_3, food_4, food_5, food_6, food_7, food_8,
+        food_9, food_10, food_11, food_12, food_13, food_14, food_15, food_16,
+        food_17, food_18, food_19, food_20, food_21, food_22, food_23, food_24,
+        food_25, food_26, food_27, food_28, food_29, food_30, food_31, food_32
+    ]
 }
 
 export const menu_list = [
     {
-        menu_name: "North Indian",
-        menu_image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=200&h=200&fit=crop"
+        menu_name: "Starters",
+        menu_image: menu_2
+    },
+    {
+        menu_name: "Main Course",
+        menu_image: menu_6
+    },
+    {
+        menu_name: "Biryani & Rice",
+        menu_image: menu_6
+    },
+    {
+        menu_name: "Bread",
+        menu_image: menu_2
     },
     {
         menu_name: "South Indian",
-        menu_image: "https://images.unsplash.com/photo-1630383249896-424e482df921?w=200&h=200&fit=crop"
-    },
-    {
-        menu_name: "Street Food",
-        menu_image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=200&h=200&fit=crop"
-    },
-    {
-        menu_name: "Biryani",
-        menu_image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=200&h=200&fit=crop"
-    },
-    {
-        menu_name: "Chinese",
-        menu_image: "https://images.unsplash.com/photo-1569058242567-93de6f36f8e6?w=200&h=200&fit=crop"
+        menu_image: menu_6
     },
     {
         menu_name: "Desserts",
-        menu_image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=200&h=200&fit=crop"
+        menu_image: menu_3
     },
     {
         menu_name: "Beverages",
-        menu_image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=200&h=200&fit=crop"
+        menu_image: menu_1
     },
     {
-        menu_name: "Thali",
-        menu_image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&h=200&fit=crop"
-    }]
-
-export const food_list = [
-    {
-        _id: "s1",
-        name: "Butter Chicken",
-        image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&h=400&fit=crop",
-        price: 320,
-        description: "Tender chicken pieces simmered in a rich, creamy tomato-based gravy with aromatic spices and butter.",
-        category: "North Indian"
-    },
-    {
-        _id: "s2",
-        name: "Masala Dosa",
-        image: "https://images.unsplash.com/photo-1630383249896-424e482df921?w=400&h=400&fit=crop",
-        price: 120,
-        description: "Crispy golden crepe made from fermented rice-lentil batter, filled with spiced potato masala.",
-        category: "South Indian"
-    },
-    {
-        _id: "s3",
-        name: "Pani Puri",
-        image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&h=400&fit=crop",
-        price: 60,
-        description: "Crispy hollow puris filled with spiced potato, chickpeas, and tangy tamarind water.",
-        category: "Street Food"
-    },
-    {
-        _id: "s4",
-        name: "Hyderabadi Biryani",
-        image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&h=400&fit=crop",
-        price: 280,
-        description: "Aromatic basmati rice layered with spiced chicken, fried onions, saffron, and herbs.",
-        category: "Biryani"
+        menu_name: "Street Food",
+        menu_image: menu_2
     }
 ]
+
+import { food_list as indian_food_list } from "../indianFoodData.js"
+export const food_list = indian_food_list
+

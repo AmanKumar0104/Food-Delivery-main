@@ -6,6 +6,8 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = (props) => {
   const [token, setToken] = useState("");
   const [admin, setAdmin] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
+
 
 
   useEffect(() => {
@@ -25,7 +27,10 @@ const StoreContextProvider = (props) => {
     setToken,
     admin,
     setAdmin,
+    isSidebarOpen,
+    setIsSidebarOpen,
   };
+
   return (
     <StoreContext.Provider value={contextValue}>
       {props.children}

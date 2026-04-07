@@ -1,0 +1,178 @@
+/* ============================================================
+   ScrollButtons — Scroll Up & Scroll Down navigation buttons
+   Positioned at bottom-left, stacked vertically
+   ============================================================ */
+
+/* ── Container ── */
+.scroll-btn-group {
+  position: fixed;
+  bottom: 110px; /* Above Chatbot FAB */
+  right: 32px; /* Switched to right side */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 10000; /* Stays below Chatbot (20000) */
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.scroll-btn-group.chat-open-hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Base button ── */
+.scroll-btn {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  transition:
+    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s ease;
+
+  /* Hidden by default — fades in via .visible class */
+  opacity: 0;
+  transform: translateY(12px) scale(0.85);
+  pointer-events: none;
+  z-index: 10000; /* Matching container below chat */
+}
+
+.scroll-btn.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* ── SVG icon ── */
+.scroll-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Scroll Up — tomato gradient ── */
+.scroll-up-btn {
+  background: linear-gradient(135deg, #ff6b35 0%, #ff4c24 100%);
+  color: #fff;
+}
+
+.scroll-up-btn:hover {
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 8px 24px rgba(255, 76, 36, 0.42);
+}
+
+.scroll-up-btn:active {
+  transform: scale(0.95);
+}
+
+/* ── Scroll Down — dark slate ── */
+.scroll-down-btn {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+  color: #fff;
+}
+
+.scroll-down-btn:hover {
+  transform: translateY(4px) scale(1.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.scroll-down-btn:active {
+  transform: scale(0.95);
+}
+
+/* ── Tooltip labels ── */
+.scroll-btn-tooltip {
+  position: absolute;
+  left: calc(100% + 10px);
+  background: rgba(0, 0, 0, 0.78);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 9px;
+  border-radius: 6px;
+  white-space: nowrap;
+  letter-spacing: 0.4px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.scroll-btn-tooltip::before {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-right-color: rgba(0, 0, 0, 0.78);
+}
+
+.scroll-btn:hover .scroll-btn-tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Pulse animation on first appearance ── */
+@keyframes scroll-btn-pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  70% { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.scroll-btn.visible {
+  animation: scroll-btn-pop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Responsive: smaller on mobile ── */
+@media (max-width: 600px) {
+  .scroll-btn-group {
+    bottom: 100px;
+    right: 18px;
+    gap: 8px;
+  }
+
+  .scroll-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .scroll-btn svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  /* Hide tooltip on small touches */
+  .scroll-btn-tooltip {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .scroll-btn-group {
+    bottom: 90px;
+    right: 14px;
+    gap: 7px;
+  }
+
+  .scroll-btn {
+    width: 34px;
+    height: 34px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+  }
+
+  .scroll-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+}

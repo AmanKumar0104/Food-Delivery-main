@@ -3,27 +3,36 @@ import userModel from "../models/userModel.js";
 import fs from "fs";
 
 // add food items
-
+// add food items
 const addFood = async (req, res) => {
-  let image_filename = `${req.file.filename}`;
-  const food = new foodModel({
-    name: req.body.name,
-    description: req.body.description,
-    price: req.body.price,
-    category: req.body.category,
-    image: image_filename,
-  });
   try {
-    let userData = await userModel.findById(req.body.userId);
-    if (userData && userData.role === "admin") {
-      await food.save();
-      res.json({ success: true, message: "Food Added" });
-    } else {
-      res.json({ success: false, message: "You are not admin" });
+    const { userId, name, description, price, category, rating } = req.body;
+    const userData = await userModel.findById(userId);
+
+    if (!userData || userData.role !== "admin") {
+      console.log(`[AUTH] Admin access denied for user: ${userId} (${userData?.email || 'Unknown User'})`);
+      return res.json({ success: false, message: "Unauthorized: Admin privileges required" });
     }
+
+    if (!req.file) {
+      return res.json({ success: false, message: "Food image is required" });
+    }
+
+    const food = new foodModel({
+      name,
+      description,
+      price: Number(price),
+      category,
+      image: req.file.filename,
+      rating: Number(rating) || 4.0,
+    });
+
+    await food.save();
+    console.log(`[SUCCESS] Food added by admin: ${userData.email}`);
+    res.json({ success: true, message: "Food Added successfully! ✅" });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: "Error" });
+    console.error("[ERROR] Could not add food:", error);
+    res.json({ success: false, message: "Failed to add food" });
   }
 };
 
@@ -33,27 +42,69 @@ const listFood = async (req, res) => {
     const foods = await foodModel.find({});
     res.json({ success: true, data: foods });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: "Error" });
+    console.error("[ERROR] Could not list foods:", error);
+    res.json({ success: false, message: "Failed to fetch food list" });
   }
 };
 
 // remove food item
 const removeFood = async (req, res) => {
   try {
-    let userData = await userModel.findById(req.body.userId);
-    if (userData && userData.role === "admin") {
-      const food = await foodModel.findById(req.body.id);
-      fs.unlink(`uploads/${food.image}`, () => {});
-      await foodModel.findByIdAndDelete(req.body.id);
-      res.json({ success: true, message: "Food Removed" });
-    } else {
-      res.json({ success: false, message: "You are not admin" });
+    const { userId, id } = req.body;
+    const userData = await userModel.findById(userId);
+
+    if (!userData || userData.role !== "admin") {
+      console.log(`[AUTH] Admin delete denied for user: ${userId}`);
+      return res.json({ success: false, message: "Unauthorized: Admin privileges required" });
     }
+
+    const food = await foodModel.findById(id);
+    if (!food) {
+      return res.json({ success: false, message: "Food item not found" });
+    }
+
+    if (food.image && !food.image.startsWith("http")) {
+      fs.unlink(`uploads/${food.image}`, (err) => {
+        if (err) console.log("[FILE] Image cleanup error:", err);
+      });
+    }
+
+    await foodModel.findByIdAndDelete(id);
+    console.log(`[SUCCESS] Food removed by admin: ${userData.email} (Item ID: ${id})`);
+    res.json({ success: true, message: "Food Removed successfully! 🗑️" });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: "Error" });
+    console.error("[ERROR] Could not remove food:", error);
+    res.json({ success: false, message: "Failed to remove item" });
   }
 };
 
-export { addFood, listFood, removeFood };
+// update food item
+const updateFood = async (req, res) => {
+  try {
+    const { userId, id, name, description, price, category, rating } = req.body;
+    const userData = await userModel.findById(userId);
+
+    if (!userData || userData.role !== "admin") {
+      return res.json({ success: false, message: "Unauthorized: Admin privileges required" });
+    }
+
+    const updateData = { name, description, price: Number(price), category, rating: Number(rating) };
+
+    if (req.file) {
+      const existingFood = await foodModel.findById(id);
+      if (existingFood && existingFood.image && !existingFood.image.startsWith("http")) {
+        fs.unlink(`uploads/${existingFood.image}`, () => {});
+      }
+      updateData.image = req.file.filename;
+    }
+
+    await foodModel.findByIdAndUpdate(id, updateData);
+    res.json({ success: true, message: "Food Updated successfully! 🛠️" });
+  } catch (error) {
+    console.error("[ERROR] Could not update food:", error);
+    res.json({ success: false, message: "Failed to update item" });
+  }
+};
+
+export { addFood, listFood, removeFood, updateFood };
+

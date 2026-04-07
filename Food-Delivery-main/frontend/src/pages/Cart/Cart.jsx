@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import "./Cart.css";
 import { StoreContext } from "../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const {
@@ -11,16 +12,25 @@ const Cart = () => {
     addToCart,
     removeFromCart,
     getTotalCartAmount,
-    url
+    url,
+    token,
+    setShowLogin
   } = useContext(StoreContext);
 
-  const navigate = useNavigate();
+  const navigate=useNavigate();
 
-  // Support both URL-based images and local uploaded images
-  const getImgSrc = (image) => image && image.startsWith("http") ? image : url + "/images/" + image;
+  const handleProceedToCheckout = () => {
+    if (!token) {
+      toast.info("Please sign in to proceed to checkout");
+      setShowLogin(true);
+    } else {
+      navigate('/order');
+    }
+  };
 
   return (
     <div className="cart">
+      <h2 className="cart-title">Your Cart</h2>
       <div className="cart-items">
         <div className="cart-items-title">
           <p>Items</p>
@@ -32,12 +42,12 @@ const Cart = () => {
         </div>
         <br />
         <hr />
-        {food_list.map((item, index) => {
+        {food_list.map((item) => {
           if (cartItems[item._id] > 0) {
             return (
-              <div>
+              <div key={item._id}>
                 <div className="cart-items-title cart-items-item">
-                  <img src={getImgSrc(item.image)} alt="" />
+                  <img src={url+"/images/"+item.image} alt={item.name} />
                   <p>{item.name}</p>
                   <p>₹{item.price}</p>
                   <p>{cartItems[item._id]}</p>
@@ -71,7 +81,7 @@ const Cart = () => {
               <b>₹{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 40}</b>
             </div>
           </div>
-          <button onClick={() => navigate('/order')}>PROCEED TO CHECKOUT</button>
+          <button onClick={handleProceedToCheckout}>PROCEED TO CHECKOUT</button>
         </div>
         <div className="cart-promocode">
           <div>

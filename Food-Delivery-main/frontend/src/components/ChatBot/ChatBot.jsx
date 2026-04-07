@@ -1,187 +1,186 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
-import "./ChatBot.css";
-import { StoreContext } from "../../context/StoreContext";
-import axios from "axios";
+import React, { useState, useEffect, useRef } from 'react';
+import './Chatbot.css';
+import axios from 'axios';
 
-const ChatBot = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [messages, setMessages] = useState([
-        {
-            role: "model",
-            text: "Hey there! 🍅 I'm Tomato AI, your food assistant! Ask me anything about our menu, or let me help you pick the perfect meal!",
-        },
-    ]);
-    const [input, setInput] = useState("");
-    const [isTyping, setIsTyping] = useState(false);
-    const messagesEndRef = useRef(null);
-    const inputRef = useRef(null);
-    const { url } = useContext(StoreContext);
+const Chatbot = ({ url, isOpen, setIsOpen }) => {
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showQuickResponses, setShowQuickResponses] = useState(true);
+  const messagesEndRef = useRef(null);
 
-    const quickActions = [
-        "🔥 What's popular?",
-        "🌶️ Something spicy",
-        "🥗 Healthy options",
-        "💰 Best value deals",
-    ];
+  const quickResponses = [
+    { id: 1, text: "Indian menu?", icon: "🍛" },
+    { id: 2, text: "Recommendations?", icon: "🍴" },
+    { id: 3, text: "Bestsellers?", icon: "🔥" },
+    { id: 4, text: "Sweet treats?", icon: "🍦" }
+  ];
 
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
+  useEffect(() => {
+    if (messages.length === 0) {
+      setTimeout(() => {
+        setMessages([{
+          id: 1,
+          text: "👋 Namaste! I'm Tomato AI. Hungry for something special? I can help you pick the best Indian dishes!",
+          sender: 'bot',
+          timestamp: new Date()
+        }]);
+      }, 500);
+    }
+  }, []);
 
-    useEffect(() => {
-        if (isOpen && inputRef.current) {
-            inputRef.current.focus();
-        }
-    }, [isOpen]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
-    const sendMessage = async (messageText) => {
-        const text = messageText || input.trim();
-        if (!text) return;
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
-        const userMessage = { role: "user", text };
-        const updatedMessages = [...messages, userMessage];
-        setMessages(updatedMessages);
-        setInput("");
-        setIsTyping(true);
+  const sendMessage = async (messageText) => {
+    if (!messageText.trim()) return;
 
-        try {
-            // Build chat history (skip system greeting)
-            const chatHistory = updatedMessages.slice(1).map((m) => ({
-                role: m.role,
-                text: m.text,
-            }));
-
-            const response = await axios.post(url + "/api/ai/chat", {
-                message: text,
-                chatHistory: chatHistory.slice(0, -1), // exclude current message
-            });
-
-            if (response.data.success) {
-                setMessages((prev) => [
-                    ...prev,
-                    { role: "model", text: response.data.reply },
-                ]);
-            } else {
-                setMessages((prev) => [
-                    ...prev,
-                    {
-                        role: "model",
-                        text: "Oops! I'm having trouble right now. Try again in a moment! 😊",
-                    },
-                ]);
-            }
-        } catch {
-            setMessages((prev) => [
-                ...prev,
-                {
-                    role: "model",
-                    text: "Sorry, I couldn't connect. Please check your internet and try again! 🔌",
-                },
-            ]);
-        }
-        setIsTyping(false);
+    const userMessage = {
+      id: Date.now(),
+      text: messageText,
+      sender: 'user',
+      timestamp: new Date()
     };
 
-    const handleKeyDown = (e) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-        }
-    };
+    setMessages(prev => [...prev, userMessage]);
+    setInputMessage('');
+    setIsLoading(true);
+    setShowQuickResponses(false);
 
-    return (
-        <div className="chatbot-wrapper">
-            {/* Floating Button */}
-            <button
-                className={`chatbot-fab ${isOpen ? "open" : ""}`}
-                onClick={() => setIsOpen(!isOpen)}
-                aria-label="Chat with AI"
-            >
-                {isOpen ? (
-                    <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
-                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                    </svg>
-                ) : (
-                    <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
-                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
-                        <circle cx="8" cy="10" r="1.2" />
-                        <circle cx="12" cy="10" r="1.2" />
-                        <circle cx="16" cy="10" r="1.2" />
-                    </svg>
-                )}
-                <span className="chatbot-fab-pulse"></span>
-            </button>
+    const userId = localStorage.getItem('chatbot_user_id') || `user_${Math.random().toString(36).substr(2, 9)}`;
+    if (!localStorage.getItem('chatbot_user_id')) {
+        localStorage.setItem('chatbot_user_id', userId);
+    }
 
-            {/* Chat Panel */}
-            <div className={`chatbot-panel ${isOpen ? "open" : ""}`}>
-                <div className="chatbot-header">
-                    <div className="chatbot-header-info">
-                        <div className="chatbot-avatar">🍅</div>
-                        <div>
-                            <h4>Tomato AI</h4>
-                            <span className="chatbot-status">● Online</span>
-                        </div>
-                    </div>
-                    <button className="chatbot-close" onClick={() => setIsOpen(false)}>
-                        ✕
-                    </button>
-                </div>
+    try {
+      const response = await axios.post(`${url}/api/chatbot/chat`, {
+        message: messageText,
+        userId: userId,
+        chatHistory: messages.map(m => ({
+          role: m.sender === 'user' ? 'user' : 'model',
+          text: m.text
+        }))
+      });
 
-                <div className="chatbot-messages">
-                    {messages.map((msg, i) => (
-                        <div key={i} className={`chatbot-msg ${msg.role}`}>
-                            {msg.role === "model" && <span className="chatbot-msg-avatar">🍅</span>}
-                            <div className="chatbot-msg-bubble">
-                                <p>{msg.text}</p>
-                            </div>
-                        </div>
-                    ))}
-                    {isTyping && (
-                        <div className="chatbot-msg model">
-                            <span className="chatbot-msg-avatar">🍅</span>
-                            <div className="chatbot-msg-bubble typing">
-                                <span className="dot"></span>
-                                <span className="dot"></span>
-                                <span className="dot"></span>
-                            </div>
-                        </div>
-                    )}
-                    <div ref={messagesEndRef} />
-                </div>
+      if (response.data.success) {
+        const botMessage = {
+          id: Date.now() + 1,
+          text: response.data.response,
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, botMessage]);
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (error) {
+      console.error("AI Chat Error:", error);
+      const errorMessage = {
+        id: Date.now() + 1,
+        text: "My apologies! 🍅 Tomato AI is feeling a bit under the weather. Please try again in a moment.",
+        sender: 'bot',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-                {messages.length <= 1 && (
-                    <div className="chatbot-quick-actions">
-                        {quickActions.map((action, i) => (
-                            <button key={i} onClick={() => sendMessage(action)}>
-                                {action}
-                            </button>
-                        ))}
-                    </div>
-                )}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendMessage(inputMessage);
+  };
 
-                <div className="chatbot-input-area">
-                    <input
-                        ref={inputRef}
-                        type="text"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        placeholder="Ask me about our menu..."
-                        disabled={isTyping}
-                    />
-                    <button
-                        className="chatbot-send"
-                        onClick={() => sendMessage()}
-                        disabled={!input.trim() || isTyping}
-                    >
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
+  return (
+    <div className={`chatbot-wrapper ${isOpen ? 'active' : ''}`}>
+      {!isOpen && (
+        <div className="chatbot-fab" onClick={() => setIsOpen(true)}>
+          <div className="fab-icon">💬</div>
+          <span className="fab-tooltip">AI 🍅</span>
         </div>
-    );
+      )}
+
+      {isOpen && (
+        <div className="chatbot-card">
+          <div className="chatbot-header">
+            <div className="header-info">
+              <div className="bot-avatar">
+                <div className="avatar-pulse"></div>
+                🍅
+              </div>
+              <div className="header-text">
+                <h3>Tomato AI Assistant</h3>
+                <span className="pulse-indicator"></span> <span>Online</span>
+              </div>
+            </div>
+            <button aria-label="Close Chat" onClick={() => setIsOpen(false)} className="close-btn">
+              ✕
+            </button>
+          </div>
+
+          <div className="chatbot-body">
+            <div className="messages-list">
+              {messages.map((msg) => (
+                <div key={msg.id} className={`message-row ${msg.sender}`}>
+                  <div className="message-bubble">
+                    {msg.text}
+                  </div>
+                  <span className="message-meta">
+                    {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+              ))}
+              {isLoading && (
+                <div className="message-row bot">
+                  <div className="typing-bubble">
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+          </div>
+
+          {showQuickResponses && !isLoading && (
+            <div className="quick-chip-container">
+              {quickResponses.map((qr) => (
+                <button
+                  key={qr.id}
+                  className="quick-chip"
+                  onClick={() => sendMessage(qr.text)}
+                >
+                  {qr.icon} {qr.text}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <form className="chatbot-footer" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              placeholder="Ask about Indian Food..."
+              disabled={isLoading}
+            />
+            <button type="submit" disabled={isLoading || !inputMessage.trim()}>
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+              </svg>
+            </button>
+          </form>
+        </div>
+      )}
+    </div>
+  );
 };
 
-export default ChatBot;
+export default Chatbot;

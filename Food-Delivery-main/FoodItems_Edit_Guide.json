@@ -1,0 +1,259 @@
+
+[
+  {
+    "id": "1",
+    "name": "Samosa (2 pcs)",
+    "price": 40,
+    "image": "1722865444288food_1.png",
+    "category": "Starters",
+    "description": "Crispy pastry filled with spiced potatoes and peas, served with sweet and tangy tamarind chutney."
+  },
+  {
+    "id": "2",
+    "name": "Paneer Tikka",
+    "price": 240,
+    "image": "1722865514626food_2.png",
+    "category": "Starters",
+    "description": "Cubes of paneer marinated in yogurt and spices, grilled to perfection in a tandoor with onions and bell peppers."
+  },
+  {
+    "id": "3",
+    "name": "Chicken Tikka",
+    "price": 280,
+    "image": "1722865628915food_3.png",
+    "category": "Starters",
+    "description": "Succulent pieces of chicken marinated in a spicy yogurt mixture and roasted until smoky and tender."
+  },
+  {
+    "id": "4",
+    "name": "Hara Bhara Kabab",
+    "price": 180,
+    "image": "1722865668073food_4.png",
+    "category": "Starters",
+    "description": "Healthy and delicious spinach and green pea patties, lightly spiced and shallow-fried."
+  },
+  {
+    "id": "5",
+    "name": "Gobi Manchurian",
+    "price": 160,
+    "image": "1722865738489food_5.png",
+    "category": "Starters",
+    "description": "Crispy cauliflower florets tossed in a spicy, sweet, and tangy Indo-Chinese sauce."
+  },
+  {
+    "id": "6",
+    "name": "Chicken Lollipop",
+    "price": 260,
+    "image": "1722865934153food_6.png",
+    "category": "Starters",
+    "description": "Deep-fried chicken drumsticks coated in a spicy red batter, served with spicy Schezwan sauce."
+  },
+  {
+    "id": "7",
+    "name": "Aloo Tikki Chaat",
+    "price": 80,
+    "image": "1722865976487food_7.png",
+    "category": "Starters",
+    "description": "Golden fried potato patties topped with yogurt, chutneys, chopped onions, and sev."
+  },
+  {
+    "id": "8",
+    "name": "Fish Fry",
+    "price": 320,
+    "image": "1722866043779food_8.png",
+    "category": "Starters",
+    "description": "Crispy batter-fried fish fillets seasoned with Indian spices and lemon juice."
+  },
+  {
+    "id": "9",
+    "name": "Spring Rolls",
+    "price": 140,
+    "image": "1722866109947food_9.png",
+    "category": "Starters",
+    "description": "Crispy rolls filled with sautéed vegetables, served with a sweet chili dipping sauce."
+  },
+  {
+    "id": "10",
+    "name": "Onion Bhaji",
+    "price": 60,
+    "image": "1722866148130food_10.png",
+    "category": "Starters",
+    "description": "Crispy sliced onion fritters seasoned with carom seeds and spices, perfect for teatime."
+  },
+  {
+    "id": "11",
+    "name": "Vada Pav",
+    "price": 30,
+    "image": "1722866329894food_11.png",
+    "category": "Starters",
+    "description": "The iconic Mumbai burger - a spicy potato dumpling in a soft bun with garlic chutney."
+  },
+  {
+    "id": "12",
+    "name": "Dahi Vada",
+    "price": 100,
+    "image": "1722866385025food_12.png",
+    "category": "Starters",
+    "description": "Soft lentil dumplings soaked in creamy yogurt and topped with sweet and spicy chutneys."
+  },
+  {
+    "id": "13",
+    "name": "Chili Chicken",
+    "price": 240,
+    "image": "1722866412882food_13.png",
+    "category": "Starters",
+    "description": "A popular Indo-Chinese dish of crispy chicken wings tossed with green chilies and soy sauce."
+  },
+  {
+    "id": "14",
+    "name": "Mushroom Tikka",
+    "price": 220,
+    "image": "1722866469319food_14.png",
+    "category": "Starters",
+    "description": "Fresh button mushrooms marinated in tandoori spices and grilled with a smoky finish."
+  },
+  {
+    "id": "15",
+    "name": "Egg Pakora",
+    "price": 120,
+    "image": "1722866504992food_15.png",
+    "category": "Starters",
+    "description": "Boiled egg halves coated in a spiced gram flour batter and deep-fried till golden."
+  },
+  {
+    "id": "16",
+    "name": "Crispy Corn",
+    "price": 150,
+    "image": "1722866560218food_16.png",
+    "category": "Starters",
+    "description": "Sweet corn kernels fried until crunchy and tossed with onions, chilies, and lemon."
+  },
+  {
+    "id": "17",
+    "name": "Veg Seekh Kabab",
+    "price": 200,
+    "image": "1722866610567food_17.png",
+    "category": "Starters",
+    "description": "Skewered minced vegetable kababs infused with aromatic spices and grilled in a tandoor."
+  },
+  {
+    "id": "18",
+    "name": "Achari Paneer Tikka",
+    "price": 250,
+    "image": "1722866647952food_18.png",
+    "category": "Starters",
+    "description": "Paneer cubes marinated in a tangy pickling spice blend and yogurt, grilled for a sharp flavor."
+  },
+  {
+    "id": "19",
+    "name": "Tandoori Chicken (Half)",
+    "price": 300,
+    "image": "1722866694357food_19.png",
+    "category": "Starters",
+    "description": "Classic tandoor-roasted chicken marinated in ginger-garlic paste and yogurt-based spices."
+  },
+  {
+    "id": "20",
+    "name": "Kathi Roll - Paneer",
+    "price": 150,
+    "image": "1722866729053food_20.png",
+    "category": "Starters",
+    "description": "Spiced paneer filling wrapped in a soft paratha with onions and green chutney."
+  },
+  {
+    "id": "21",
+    "name": "Kathi Roll - Chicken",
+    "price": 180,
+    "image": "1722866777756food_21.png",
+    "category": "Starters",
+    "description": "Juicy chicken tikka pieces wrapped in a flaky paratha with sliced onions and lime."
+  },
+  {
+    "id": "22",
+    "name": "Malai Broccoli",
+    "price": 240,
+    "image": "1722866830901food_22.png",
+    "category": "Starters",
+    "description": "Tender broccoli florets marinated in a creamy cheese and cardamom mixture, lightly grilled."
+  },
+  {
+    "id": "23",
+    "name": "Mutton Seekh Kabab",
+    "price": 350,
+    "image": "1722866871307food_23.png",
+    "category": "Starters",
+    "description": "Minced mutton blended with secret spices and grilled on skewers for a melt-in-the-mouth experience."
+  },
+  {
+    "id": "24",
+    "name": "Chicken Seekh Kabab",
+    "price": 280,
+    "image": "1722866909328food_24.png",
+    "category": "Starters",
+    "description": "Skewered minced chicken prepared with fresh herbs and traditional Indian spices."
+  },
+  {
+    "id": "25",
+    "name": "Corn Cheese Balls",
+    "price": 180,
+    "image": "1722866948105food_25.png",
+    "category": "Starters",
+    "description": "Golden-fried balls filled with a cheesy corn mixture, served with mint mayo."
+  },
+  {
+    "id": "26",
+    "name": "Paneer Butter Masala",
+    "price": 280,
+    "image": "1722867018540food_26.png",
+    "category": "Main Course",
+    "description": "Soft paneer cubes cooked in a rich, creamy, and mildly sweet tomato-based gravy."
+  },
+  {
+    "id": "27",
+    "name": "Dal Makhani",
+    "price": 220,
+    "image": "1722867053413food_27.png",
+    "category": "Main Course",
+    "description": "Whole black lentils and kidney beans slow-cooked overnight with cream and butter."
+  },
+  {
+    "id": "28",
+    "name": "Chole Bhature",
+    "price": 160,
+    "image": "1722867110108food_28.png",
+    "category": "Main Course",
+    "description": "Spicy chickpea curry served with large, fluffy deep-fried leavened bread."
+  },
+  {
+    "id": "29",
+    "name": "Palak Paneer",
+    "price": 260,
+    "image": "1722867144188food_29.png",
+    "category": "Main Course",
+    "description": "Cottage cheese cubes in a smooth, thick, and nutritious spinach puree flavored with garlic."
+  },
+  {
+    "id": "30",
+    "name": "Kadai Paneer",
+    "price": 270,
+    "image": "1722867222977food_30.png",
+    "category": "Main Course",
+    "description": "Paneer cooked with bell peppers, onions, and freshly ground kadai masala in a thick gravy."
+  },
+  {
+    "id": "31",
+    "name": "Mix Veg Curry",
+    "price": 180,
+    "image": "1722867254829food_31.png",
+    "category": "Main Course",
+    "description": "A healthy medley of seasonal vegetables sautéed with aromatic spices in a tomato-onion base."
+  },
+  {
+    "id": "32",
+    "name": "Malai Kofta",
+    "price": 300,
+    "image": "1722867630288food_32.png",
+    "category": "Main Course",
+    "description": "Deep-fried potato and paneer balls in a silky white gravy made from cashew and cream."
+  }
+]

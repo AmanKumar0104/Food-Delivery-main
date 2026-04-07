@@ -6,12 +6,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // placing user order for frontend
 const placeOrder = async (req, res) => {
-  const frontend_url = process.env.FRONTEND_URL || "http://localhost:5173";
+  const frontend_url = "https://food-delivery-frontend-s2l9.onrender.com";
   try {
     const newOrder = new orderModel({
       userId: req.body.userId,
       items: req.body.items,
-      amount: req.body.amount,
+      amount: req.body.amount, // already includes delivery in frontend calculation or we can adjust here
       address: req.body.address,
     });
     await newOrder.save();
@@ -19,7 +19,7 @@ const placeOrder = async (req, res) => {
 
     const line_items = req.body.items.map((item) => ({
       price_data: {
-        currency: "usd",
+        currency: "inr",
         product_data: {
           name: item.name,
         },
@@ -30,11 +30,11 @@ const placeOrder = async (req, res) => {
 
     line_items.push({
       price_data: {
-        currency: "usd",
+        currency: "inr",
         product_data: {
           name: "Delivery Charges",
         },
-        unit_amount: 2 * 100,
+        unit_amount: 40 * 100,
       },
       quantity: 1,
     });
@@ -105,7 +105,7 @@ const updateStatus = async (req, res) => {
         status: req.body.status,
       });
       res.json({ success: true, message: "Status Updated Successfully" });
-    } else {
+    }else{
       res.json({ success: false, message: "You are not an admin" });
     }
   } catch (error) {
@@ -114,4 +114,20 @@ const updateStatus = async (req, res) => {
   }
 };
 
-export { placeOrder, verifyOrder, userOrders, listOrders, updateStatus };
+const notifyCustomer = async (req, res) => {
+  const { customerEmail, customerPhone, orderTotal } = req.body;
+  try {
+    // Simulate sending SMS
+    console.log(`[SIMULATION] SMS sent to ${customerPhone}: Your order totaling ₹${orderTotal} has been received. Check your WhatsApp for the bill.`);
+    
+    // Simulate sending Email
+    console.log(`[SIMULATION] Email sent to ${customerEmail}: Order Confirmation - Your bill for ₹${orderTotal} is ready.`);
+    
+    res.json({ success: true, message: "Notifications simulated successfully" });
+  } catch (error) {
+    console.error("Notification Error:", error);
+    res.json({ success: false, message: "Error in simulating notifications" });
+  }
+};
+
+export { placeOrder, verifyOrder, userOrders, listOrders, updateStatus, notifyCustomer };

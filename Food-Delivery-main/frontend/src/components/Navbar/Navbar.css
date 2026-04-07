@@ -1,133 +1,574 @@
-.navbar{
-    padding: 20px 0px;
+/* ============================================================
+   NAVBAR — Fully Responsive with Fluid Typography & Icons
+   Breakpoints: 1200px | 1050px | 900px | 600px | 380px
+   ============================================================ */
+
+/* ── Reset hamburger to hidden on desktop ── */
+.navbar-hamburger {
+    display: none;
+}
+
+/* ── Wrapper ── */
+.navbar {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+    transition: box-shadow 0.3s ease;
+}
+
+/* ── Inner container ── */
+.navbar-container {
+    max-width: 1280px;
+    width: 90%;
+    margin: 0 auto;
+    padding: clamp(10px, 1.5vw, 18px) 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-.navbar .logo{
-    width: 150px;
+    gap: clamp(12px, 2vw, 28px);
 }
 
-.navbar-menu{
+/* ── Logo ── */
+.navbar .logo {
+    width: clamp(110px, 12vw, 160px);
+    height: auto;
+    flex-shrink: 0;
+    display: block;
+}
+
+/* ── Desktop nav links ── */
+.navbar-menu {
     display: flex;
     list-style: none;
-    gap: 20px;
-    color: #49557e;
-    font-size: 18px;
-}
-.navbar-right{
-    display: flex;
+    gap: clamp(14px, 2.2vw, 36px);
     align-items: center;
-    gap: 40px;
+    flex-wrap: nowrap;
 }
 
-.navbar button{
-    background: transparent;
-    font-size: 16px;
+.navbar-menu li,
+.navbar-menu a {
+    cursor: pointer;
+    transition: color 0.25s, transform 0.25s;
+    text-transform: capitalize;
+    font-size: clamp(13px, 1.15vw, 18px);
+    font-weight: 500;
     color: #49557e;
-    border: 1px solid tomato;
-    padding: 10px 30px;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.navbar-menu a:hover,
+.navbar-menu li:hover {
+    color: #ff4c24;
+    transform: translateY(-2px);
+}
+
+.navbar .active {
+    padding-bottom: 2px;
+    border-bottom: 2.5px solid #ff4c24;
+    color: #ff4c24;
+}
+
+/* ── Right-side icons ── */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: clamp(12px, 1.8vw, 32px);
+    flex-shrink: 0;
+}
+
+/* Search icon & container */
+.navbar-search-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: all 0.4s ease;
+}
+
+.navbar-search-container.active {
+    background: #fdf2f0;
+    padding: 5px 15px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 76, 36, 0.2);
+    box-shadow: 0 2px 10px rgba(255, 76, 36, 0.05);
+}
+
+.navbar-search-container input {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 0;
+    transition: width 0.4s ease, padding 0.4s ease;
+    font-size: 14px;
+    color: #49557e;
+}
+
+.navbar-search-container.active input {
+    width: clamp(120px, 15vw, 250px);
+    padding-left: 10px;
+}
+
+.search-icon {
+    width: clamp(18px, 1.6vw, 24px);
+    height: clamp(18px, 1.6vw, 24px);
+    cursor: pointer;
+    opacity: 0.75;
+    transition: opacity 0.2s, transform 0.2s;
+    flex-shrink: 0;
+}
+
+.search-icon:hover { 
+    opacity: 1; 
+    transform: scale(1.1);
+}
+
+/* Cart / basket icon wrapper */
+.navbar-search-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-search-icon a {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-search-icon img {
+    width: clamp(20px, 1.8vw, 26px);
+    height: clamp(20px, 1.8vw, 26px);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.navbar-search-icon img:hover { transform: scale(1.12); }
+
+/* Cart dot badge */
+.navbar-search-icon .dot {
+    position: absolute;
+    min-width: clamp(7px, 0.7vw, 10px);
+    min-height: clamp(7px, 0.7vw, 10px);
+    background-color: tomato;
+    border-radius: 50%;
+    top: clamp(-6px, -0.5vw, -8px);
+    right: clamp(-6px, -0.5vw, -8px);
+}
+
+/* Profile icon */
+.navbar-profile {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-profile > img {
+    width: clamp(28px, 2.4vw, 36px);
+    height: clamp(28px, 2.4vw, 36px);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+
+.navbar-profile > img:hover { transform: scale(1.1); }
+
+/* Profile icon container */
+.navbar-profile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px 0; /* Vertical padding to broaden the hover area */
+}
+
+.navbar-profile::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 100%;
+    height: 15px; /* THE BRIDGE: covers the 8px gap + safe zone */
+    background: transparent;
+    z-index: 5;
+}
+
+.navbar-profile > img {
+    width: clamp(28px, 2.4vw, 36px);
+    height: clamp(28px, 2.4vw, 36px);
+    border-radius: 50%;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid transparent;
+}
+
+.navbar-profile:hover > img,
+.navbar-profile.active > img {
+    box-shadow: 0 0 0 2px #ff4c24;
+    transform: scale(1.05);
+}
+
+/* Profile dropdown */
+.nav-profile-dropdown {
+    position: absolute;
+    display: none; /* Default for non-hover/non-active */
+    right: 0;
+    top: calc(100% + 10px); /* Position below the bridge area */
+    z-index: 1000;
+    min-width: 160px;
+    background-color: #fff2ef;
+    padding: 12px 0; /* Even padding for menu items */
+    border-radius: 12px;
+    border: 1px solid rgba(255, 76, 36, 0.3);
+    list-style: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    flex-direction: column;
+    animation: fadeInSlide 0.3s ease-out;
+}
+
+@keyframes fadeInSlide {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.navbar-profile:hover .nav-profile-dropdown,
+.nav-profile-dropdown.show {
+    display: flex;
+}
+
+.nav-profile-dropdown li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #49557e;
+    padding: 10px 20px;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.nav-profile-dropdown li:hover { 
+    background-color: #ffe6e0;
+    color: #ff4c24; 
+}
+
+.nav-profile-dropdown img {
+    width: 20px;
+    height: auto;
+}
+
+.nav-profile-dropdown hr {
+    border: none;
+    border-top: 1px solid rgba(255, 76, 36, 0.1);
+    margin: 4px 0;
+}
+
+/* ── Group Order Button (Desktop) ── */
+.navbar-group-order-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: clamp(6px, 0.7vw, 10px) clamp(12px, 1.4vw, 22px);
+    border: 1.5px solid rgba(255, 76, 36, 0.15);
+    border-radius: 50px;
+    color: #49557e;
+    font-weight: 600;
+    font-size: clamp(12px, 1.05vw, 16px);
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.navbar-group-order-btn span {
+    display: inline-block;
+}
+
+.navbar-group-order-btn svg {
+    color: #ff4c24;
+    width: clamp(16px, 1.4vw, 20px);
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.navbar-group-order-btn:hover {
+    border-color: #ff4c24;
+    background: #fff4f2;
+    color: #ff4c24;
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(255, 76, 36, 0.1);
+}
+
+.navbar-group-order-btn:hover svg {
+    transform: rotate(-10deg) scale(1.1);
+}
+
+.navbar-group-order-btn:active {
+    transform: scale(0.98);
+}
+
+.navbar-group-order-btn.active-btn {
+    border-color: #ff4c24;
+    background: #ff4c24;
+    color: white;
+}
+
+.navbar-group-order-btn.active-btn svg {
+    color: white;
+}
+
+.mobile-only {
+    display: none !important;
+}
+
+/* ── Sign-in button ── */
+.navbar button,
+.navbar-signin-btn {
+    background: transparent;
+    font-size: clamp(12px, 1vw, 16px);
+    color: #49557e;
+    border: 1.5px solid tomato;
+    padding: clamp(7px, 0.8vw, 11px) clamp(16px, 1.8vw, 28px);
     border-radius: 50px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: background 0.25s, color 0.25s;
+    white-space: nowrap;
 }
 
-.navbar button:hover{
+.navbar button:hover,
+.navbar-signin-btn:hover {
     background-color: #fff4f2;
-}
-
-.navbar .active{
-    padding-bottom: 2px;
-    border-bottom: 2px solid #49557e;
-}
-
-.navbar li{
-    cursor: pointer;
-}
-.navbar-search-icon{
-    position: relative;
-}
-
-.navbar-search-icon .dot{
-    position: absolute;
-    min-width: 10px;
-    min-height: 10px;
-    background-color: tomato;
-    border-radius: 5px;
-    top: -8px;
-    right: -8px;
-}
-.navbar-profile{
-    position: relative;
-}
-.nav-profile-dropdown{
-    position: absolute;
-    display: none;
-    right: 0;
-    z-index: 1;
-}
-.navbar-profile:hover .nav-profile-dropdown{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: #fff2ef;
-    padding: 12px 25px;
-    border-radius: 4px;
-    border: 1px solid tomato;
-    outline: 2px solid white;
-    list-style: none;
-}
-.nav-profile-dropdown li{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-}
-.nav-profile-dropdown img{
-    width: 20px;
-}
-.nav-profile-dropdown li:hover{
     color: tomato;
 }
-@media (max-width:1050px) {
-    .navbar .logo{
-        width: 140px;
-    } 
-    .navbar-menu{
-        gap: 20px;
-        font-size: 17px;
-    }
-    .navbar-right{
-        gap: 30px;
-    }
-    .navbar-right img{
-        width: 22px;
-    }
-    .navbar-right button{
-        padding: 8px 25px;
+
+/* ============================================================
+   BREAKPOINT: 1200px — slight compression
+   ============================================================ */
+@media (max-width: 1200px) {
+    .navbar-container {
+        width: 94%;
     }
 }
-@media (max-width:900px) {
-    .navbar .logo{
-        width: 120px;
-    } 
-    .navbar-menu{
-        gap: 15px;
-        font-size: 16px;
+
+/* ============================================================
+   BREAKPOINT: 1050px — tighter desktop
+   ============================================================ */
+@media (max-width: 1050px) {
+    .navbar-container {
+        width: 96%;
+        gap: 16px;
     }
-    .navbar-right{
-        gap: 20px;
+    .navbar-menu {
+        gap: 18px;
     }
-    .navbar-right img{
+    .navbar-right {
+        gap: 16px;
+    }
+}
+
+/* ============================================================
+   BREAKPOINT: 900px — switch to mobile hamburger layout
+   ============================================================ */
+@media (max-width: 900px) {
+    /* Full-width container, add horizontal padding */
+    .navbar-container {
+        width: 100%;
+        padding: 10px 16px;
+        position: relative;
+    }
+
+    /* Logo adjusts */
+    .navbar .logo {
+        width: clamp(100px, 28vw, 140px);
+    }
+
+    /* Hamburger becomes visible */
+    .navbar-hamburger {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: clamp(34px, 8vw, 44px);
+        height: clamp(34px, 8vw, 44px);
+        cursor: pointer;
+        z-index: 10001;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+        flex-shrink: 0;
+        transition: box-shadow 0.2s;
+    }
+
+    .navbar-hamburger:hover {
+        box-shadow: 0 4px 16px rgba(255, 76, 36, 0.2);
+    }
+
+    /* Hamburger SVG scales with container */
+    .navbar-hamburger svg {
+        width: clamp(18px, 5vw, 26px);
+        height: clamp(18px, 5vw, 26px);
+    }
+
+    /* ── Slide-in drawer ── */
+    .navbar-menu {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: min(75%, 320px);
+        height: 100dvh;
+        background: white;
+        padding: clamp(70px, 15vw, 100px) clamp(24px, 6vw, 48px) 40px;
+        gap: clamp(20px, 5vw, 36px);
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -8px 0 32px rgba(0,0,0,0.1);
+        z-index: 10000;
+        visibility: hidden;
+        overflow-y: auto;
+        align-items: flex-start;
+    }
+
+    .navbar-menu.mobile {
+        right: 0;
+        visibility: visible;
+    }
+
+    .navbar-menu a,
+    .navbar-menu li {
+        font-size: clamp(17px, 5vw, 22px);
+        width: 100%;
+        color: #ff4c24;
+        font-weight: 600;
+    }
+
+    /* Right icon group — shrinks on mobile, makes room for hamburger */
+    .navbar-right {
+        gap: clamp(10px, 3vw, 20px);
+        /* hamburger sits INSIDE .navbar-right now */
+    }
+
+    /* Cart icon */
+    .navbar-search-icon img {
+        width: clamp(20px, 5.5vw, 28px);
+        height: clamp(20px, 5.5vw, 28px);
+    }
+
+    /* Profile icon */
+    .navbar-profile > img {
+        width: clamp(26px, 6vw, 32px);
+        height: clamp(26px, 6vw, 32px);
+    }
+
+    /* Responsive Link Toggles */
+    .desktop-only {
+        display: none !important;
+    }
+    
+    .mobile-only {
+        display: block !important;
+    }
+
+    /* Search icon — SHOWING it now but adjusted for mobile */
+    .search-icon {
+        display: block;
         width: 20px;
+        height: 20px;
     }
-    .navbar-right button{
-        padding: 7px 20px;
-        font-size: 15px;
+    
+    .navbar-search-container.active input {
+        width: 120px; /* Smaller width on mobile to avoid overlap */
+        font-size: 13px;
+    }
+
+    /* Sign-in button — hidden on mobile (accessible via drawer) */
+    .navbar-signin-btn {
+        display: none;
     }
 }
-@media (max-width:750px) { 
-    .navbar-menu{
-        display: none;
+
+/* ============================================================
+   BREAKPOINT: 600px — small phones
+   ============================================================ */
+@media (max-width: 600px) {
+    .navbar-container {
+        padding: 8px 14px;
+    }
+
+    .navbar .logo {
+        width: clamp(88px, 26vw, 120px);
+    }
+
+    .navbar-right {
+        gap: clamp(8px, 2.8vw, 16px);
+    }
+
+    .navbar-search-icon img {
+        width: clamp(18px, 5vw, 24px);
+        height: clamp(18px, 5vw, 24px);
+    }
+
+    .navbar-profile > img {
+        width: clamp(24px, 5.5vw, 30px);
+        height: clamp(24px, 5.5vw, 30px);
+    }
+
+    .navbar-hamburger {
+        width: clamp(30px, 8vw, 40px);
+        height: clamp(30px, 8vw, 40px);
+    }
+
+    .navbar-hamburger svg {
+        width: clamp(16px, 4.5vw, 22px);
+        height: clamp(16px, 4.5vw, 22px);
+    }
+}
+
+/* ============================================================
+   BREAKPOINT: 380px — very small phones (Galaxy S8+ is 360px)
+   ============================================================ */
+@media (max-width: 380px) {
+    .navbar-container {
+        padding: 7px 10px;
+        gap: 6px;
+    }
+
+    .navbar .logo {
+        width: clamp(80px, 26vw, 105px);
+    }
+
+    .navbar-right {
+        gap: 8px;
+    }
+
+    .navbar-search-icon img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .navbar-profile > img {
+        width: 22px;
+        height: 22px;
+    }
+
+    .navbar-hamburger {
+        width: 30px;
+        height: 30px;
+    }
+
+    .navbar-hamburger svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Dot badge */
+    .navbar-search-icon .dot {
+        min-width: 7px;
+        min-height: 7px;
+        top: -4px;
+        right: -4px;
     }
 }

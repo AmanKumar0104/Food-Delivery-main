@@ -1,257 +1,114 @@
-# TOMATO - Food Ordering Website
+# 🍅 Tomato - Full Stack Indian Food Delivery Application
 
-This repository hosts the source code for TOMATO, a dynamic food ordering website built with the MERN Stack. It offers a user-friendly platform for seamless online food ordering.
+Tomato is a modern, high-performance, and feature-rich food ordering platform built using the **MERN Stack** (MongoDB, Express, React, Node.js). It offers a seamless experience for food lovers to explore a vast menu of authentic Indian dishes, customize their orders, and choose between traditional card payments or direct WhatsApp ordering.
 
-## Demo
+---
 
-- User Panel: [C:\Users\AMANA PRAJAPATI\Downloads\Food-Delivery-main\Food-Delivery-main\Food-Delivery>type README.md
-# TOMATO - Food Ordering Website
+## 🚀 Key Features
 
-This repository hosts the source code for TOMATO, a dynamic food ordering website built with the MERN Stack. It offers a user-friendly platform for seamless online food ordering.    
+### 👤 User Panel
+- **Authentic Indian Menu**: Over 200+ curated Indian dishes across categories like North Indian, Biryani, Street Food, and more.
+- **AI-Powered Recommendations**: Personalized food suggestions based on popular choices and top ratings.
+- **Smart Customization**: A dedicated "Customize Menu" feature allows users to build their perfect meal and share it via WhatsApp.
+- **Full Checkout Flow**: Integrated shopping cart with real-time total calculation and delivery fee handling.
+- **Dual Payment Options**:
+  - **Online Payment**: Integrated with Stripe for secure credit/debit card transactions.
+  - **WhatsApp Ordering**: A professional "Order via WhatsApp" API that formats order details (items, price, address) into a clear message.
+- **Modern Contact Us**: A sleek, glassmorphism-designed contact section with automated WhatsApp and database integration.
+- **Authentication**: Secure JWT-based login and signup with password hashing.
+- **Mobile Responsive**: Fully optimized for Desktop, Tablet, and Mobile devices.
 
-## Demo
+### 🛡️ Admin Dashboard
+- **Product Management**: Add, update, or remove food items from the menu in real-time.
+- **Order Tracking**: Manage customer orders and view delivery statuses.
+- **User Feedback**: Centralized "User Messages" panel to read and respond to inquiries submitted via the Contact Us form.
+- **Analytics & Lists**: Clear tabular views of all platform data for efficient management.
 
-- User Panel: [http://localhost:5173/](http://localhost:5173/)
-- Admin Panel: [http://localhost:5174/](http://localhost:5174/)
+---
 
-## Features
+## 🛠 Tech Stack
 
-- User Panel
-- Admin Panel
-- JWT Authentication      
-- Password Hashing with Bcrypt
-- Stripe Payment Integration
-- Login/Signup
-- Logout
-- Add to Cart
-- Place Order
-- Order Management        
-- Products Management     
-- Filter Food Products    
-- Login/Signup
-- Authenticated APIs      
-- REST APIs
-- Role-Based Identification
-- Beautiful Alerts        
+- **Frontend**: React.js, Context API, CSS3 (Vanilla), React Router, Axios.
+- **Backend**: Node.js, Express.js.
+- **Database**: MongoDB with Mongoose ODM.
+- **Authentication**: JSON Web Token (JWT) & Bcrypt.js.
+- **Payments**: Stripe API.
+- **Communications**: WhatsApp Business API Integration.
+- **Media**: Multer for image uploads.
 
-## Screenshots
+---
 
-![Hero](https://i.ibb.co/59cwY75/food-hero.png)     
-- Hero Section
+## 📸 Screenshots
 
-![Products](https://i.ibb.co/JnNQPyQ/food-products.png)
-- Products Section        
+### 🏠 Homepage
+![Home](screenshots/home.png)
+*Modern Hero section with a clean, responsive navigation bar.*
 
-![Cart](https://i.ibb.co/t2LrQ8p/food-cart.png)     
-- Cart Page
+### 🍽️ Explore Menu
+![Menu](screenshots/menu.png)
+*Dynamic category filtering and rich food item cards.*
 
-![Login](https://i.ibb.co/s6PgwkZ/food-login.png)   
-- Login Popup
+### 🛒 Shopping Cart
+![Cart](screenshots/cart.png)
+*Review selected items before proceeding to checkout.*
 
-## Run Locally
+### 💳 Modern Checkout & WhatsApp API
+![Checkout](screenshots/checkout.png)
+*Choose between card payment or the itemized WhatsApp ordering system.*
 
-Clone the project
+### 📞 Contact Us (Glassmorphism UI)
+![Contact](screenshots/contact.png)
+*Interactive contact form with blur effects and smooth animations.*
 
+### 📊 Admin Panel - Inventory Management
+![Admin List](screenshots/admin_list.png)
+*Manage your restaurant's digital inventory with ease.*
+
+### 📩 Admin Panel - User Messages
+![Admin Messages](screenshots/admin_messages.png)
+*Track and manage all customer feedback and inquiries.*
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1. Clone the Repository
 ```bash
-    git clone https://github.com/AmanKumar0104/FoodDelivery
-```
-Go to the project directory
-
-```bash
-    cd Food-Delivery      
-```
-Install dependencies (frontend)
-
-```bash
-    cd frontend
-    npm install
-```
-Install dependencies (admin)
-
-```bash
-    cd admin
-    npm install
-```
-Install dependencies (backend)
-
-```bash
-    cd backend
-    npm install
-```
-Setup Environment Vaiables
-
-```Make .env file in "backend" folder and store environment Variables
-  JWT_SECRET=YOUR_SECRET_TEXT
-  SALT=YOUR_SALT_VALUE    
-  MONGO_URL=YOUR_DATABASE_URL
-  STRIPE_SECRET_KEY=YOUR_KEY
- ```
-
-Setup the Frontend and Backend URL
-   - App.jsx in Admin folder
-      const url = YOUR_BACKEND_URL
-
-  - StoreContext.js in Frontend folder
-      const url = YOUR_BACKEND_URL
-
-  - orderController in Backend folder
-      const frontend_url = YOUR_FRONTEND_URL        
-
-Start the Backend server  
-
-```bash
-    nodemon server.js     
+git clone https://github.com/AmanKumar0104/FoodDelivery.git
+cd Food-Delivery-main
 ```
 
-Start the Frontend server 
-
-```bash
-    npm start
+### 2. Setup Backend (.env)
+Create a `.env` file in the `backend` folder:
+```env
+MONGO_URL=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+STRIPE_SECRET_KEY=your_stripe_key
 ```
 
-Start the Backend server  
-
+### 3. Install Dependencies & Start
+**Backend:**
 ```bash
-    npm start
-```
-## Tech Stack
-* [React](https://reactjs.org/)
-* [Node.js](https://nodejs.org/en)
-* [Express.js](https://expressjs.com/)
-* [Mongodb](https://www.mongodb.com/)
-* [Stripe](https://stripe.com/)
-* [JWT-Authentication](https://jwt.io/introduction) 
-* [Multer](https://www.npmjs.com/package/multer)    
-
-## Deployment
-
-The application is deployed on Render.
-Just raise an issue, and we will discuss it.
-
-## Feedback
-
-If you have any feedback, please reach out to me [here](https://www.linkedin.com/in/aman-kumar-full-stack-developer/)    
-](https://food-delivery-frontend-s2l9.onrender.com/)
-- Admin Panel: [https://food-delivery-admin-wrme.onrender.com/](https://food-delivery-admin-wrme.onrender.com/)
-
-## Features
-
-- User Panel
-- Admin Panel
-- JWT Authentication
-- Password Hashing with Bcrypt
-- Stripe Payment Integration
-- Login/Signup
-- Logout
-- Add to Cart
-- Place Order
-- Order Management
-- Products Management
-- Filter Food Products
-- Login/Signup
-- Authenticated APIs
-- REST APIs
-- Role-Based Identification
-- Beautiful Alerts
-
-## Screenshots
-
-![Hero](https://i.ibb.co/59cwY75/food-hero.png)
-- Hero Section
-
-![Products](https://i.ibb.co/JnNQPyQ/food-products.png)
-- Products Section
-
-![Cart](https://i.ibb.co/t2LrQ8p/food-cart.png)
-- Cart Page
-
-![Login](https://i.ibb.co/s6PgwkZ/food-login.png)
-- Login Popup
-
-## Run Locally
-
-Clone the project
-
-```bash
-    git clone https://github.com/Mshandev/Food-Delivery
-```
-Go to the project directory
-
-```bash
-    cd Food-Delivery
-```
-Install dependencies (frontend)
-
-```bash
-    cd frontend
-    npm install
-```
-Install dependencies (admin)
-
-```bash
-    cd admin
-    npm install
-```
-Install dependencies (backend)
-
-```bash
-    cd backend
-    npm install
-```
-Setup Environment Vaiables
-
-```Make .env file in "backend" folder and store environment Variables
-  JWT_SECRET=YOUR_SECRET_TEXT
-  SALT=YOUR_SALT_VALUE
-  MONGO_URL=YOUR_DATABASE_URL
-  STRIPE_SECRET_KEY=YOUR_KEY
- ```
-
-Setup the Frontend and Backend URL
-   - App.jsx in Admin folder
-      const url = YOUR_BACKEND_URL
-     
-  - StoreContext.js in Frontend folder
-      const url = YOUR_BACKEND_URL
-
-  - orderController in Backend folder
-      const frontend_url = YOUR_FRONTEND_URL 
-
-Start the Backend server
-
-```bash
-    nodemon server.js
+cd backend
+npm install
+npm run server
 ```
 
-Start the Frontend server
-
+**Frontend:**
 ```bash
-    npm start
+cd frontend
+npm install
+npm run dev
 ```
 
-Start the Backend server
-
+**Admin Panel:**
 ```bash
-    npm start
+cd admin
+npm install
+npm run dev
 ```
-## Tech Stack
-* [React](https://reactjs.org/)
-* [Node.js](https://nodejs.org/en)
-* [Express.js](https://expressjs.com/)
-* [Mongodb](https://www.mongodb.com/)
-* [Stripe](https://stripe.com/)
-* [JWT-Authentication](https://jwt.io/introduction)
-* [Multer](https://www.npmjs.com/package/multer)
 
-## Deployment
+---
 
-The application is deployed on Render.
-
-## Contributing
-
-Contributions are always welcome!
-Just raise an issue, and we will discuss it.
-
-## Feedback
-
-If you have any feedback, please reach out to me [here](https://www.linkedin.com/in/aman-kumar-full-stack-developer/)
+## 🤝 Feedback
+Reach out to me on [LinkedIn](https://www.linkedin.com/in/aman-kumar-full-stack-developer/) for any feedback or collaboration opportunities!

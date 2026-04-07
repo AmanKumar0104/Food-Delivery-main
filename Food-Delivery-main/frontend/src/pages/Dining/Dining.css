@@ -1,0 +1,285 @@
+/* Dining Page Layout */
+.dining-container {
+    width: 100%;
+}
+
+.dining-main-layout {
+    display: flex;
+    gap: 30px;
+    padding: 20px 5%;
+    align-items: flex-start;
+}
+
+.dining-left-content {
+    flex: 1;
+}
+
+.dining-right-sidebar {
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 100px; /* Sticky below navbar */
+}
+
+/* Marketing Card */
+.planner-ad-card {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: white;
+    padding: 24px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.planner-ad-card h4 {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    color: #fbbf24;
+}
+
+.planner-ad-card p {
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    opacity: 0.8;
+    line-height: 1.4;
+}
+
+.upgrade-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #fbbf24;
+    color: #1a1a1a;
+    border-radius: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.upgrade-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Original Content Styles */
+.dining-types-nav {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.dining-types-nav button {
+    padding: 10px 22px;
+    border: 1.5px solid var(--border-color, #eee);
+    border-radius: 50px;
+    background: var(--card-bg, #fff);
+    color: var(--text-color, #49557e);
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s;
+}
+
+.dining-types-nav button.active {
+    background: var(--brand-color, #ff4c24);
+    color: white;
+    border-color: var(--brand-color, #ff4c24);
+}
+
+.dining-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.restaurant-card {
+    background: var(--card-bg, #fff);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color, #eee);
+    transition: transform 0.3s;
+}
+
+.restaurant-card:hover {
+    transform: translateY(-8px);
+}
+
+.card-image {
+    position: relative;
+    height: 180px;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rating-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.status-pill {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+    text-transform: capitalize;
+}
+
+.status-pill.available { background: #10b981; }
+.status-pill.limited { background: #f59e0b; }
+.status-pill.full { background: #ef4444; }
+
+.card-info {
+    padding: 20px;
+}
+
+.info-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.info-top h3 { font-size: 1.1rem; color: var(--text-color, #111); }
+.distance { font-size: 0.8rem; color: var(--secondary-text, #666); }
+
+.cuisine { color: var(--secondary-text, #666); font-size: 0.85rem; margin-bottom: 15px; }
+
+.smart-insights {
+    background: rgba(0,0,0,0.02);
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.insight-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+}
+
+.best-time-badge {
+    background: #fbbf2415;
+    color: #fbbf24;
+    padding: 6px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.book-table-btn {
+    flex: 2;
+    padding: 10px;
+    background: var(--brand-color, #ff4c24);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.view-menu-btn {
+    flex: 1;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--border-color, #eee);
+    color: var(--text-color, #49557e);
+    border-radius: 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+/* Modals */
+.dining-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.dining-modal {
+    background: var(--card-bg, #fff);
+    width: 90%;
+    max-width: 500px;
+    border-radius: 24px;
+    padding: 30px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: rgba(0,0,0,0.05);
+    border: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.type-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.type-chip {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color, #eee);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.type-chip.active {
+    background: var(--brand-color, #ff4c24);
+    color: white;
+    border-color: var(--brand-color, #ff4c24);
+}
+
+/* Responsiveness */
+@media (max-width: 1050px) {
+    .dining-main-layout {
+        flex-direction: column;
+    }
+    .dining-right-sidebar {
+        width: 100%;
+        position: static;
+    }
+}

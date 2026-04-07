@@ -1,14 +1,54 @@
 import axios from "axios";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useCallback } from "react";
 import { toast } from "react-toastify";
+import { food_list as local_food_list } from "../assets/frontend_assets/assets";
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
-  const url = import.meta.env.VITE_BACKEND_URL || "https://food-delivery-backend-5b6g.onrender.com";
+  const url = "http://localhost:4000";
   const [token, setToken] = useState("");
-  const [food_list, setFoodList] = useState([]);
+  
+  // Use original local list as initial state
+  const [food_list, setFoodList] = useState(local_food_list);
+  const [showLogin, setShowLogin] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
+  
+  // Time-Based Context
+  const [timeTheme, setTimeTheme] = useState("light-theme");
+  const [timeGreeting, setTimeGreeting] = useState("Enjoy our delicious food!");
+  const [timeCategory, setTimeCategory] = useState("Breakfast");
+
+  const detectTimeTheme = useCallback(() => {
+    const hour = new Date().getHours();
+    
+    if (hour >= 6 && hour < 12) {
+      setTimeTheme("morning-theme");
+      setTimeGreeting("Start your day with a healthy breakfast 🌅");
+      setTimeCategory("Starters");
+    } else if (hour >= 12 && hour < 17) {
+      setTimeTheme("warm-theme");
+      setTimeGreeting("Enjoy your delicious lunch 🌞");
+      setTimeCategory("Main Course"); // Mapping categories to Lunch
+    } else if (hour >= 17 && hour < 21) {
+      setTimeTheme("evening-theme");
+      setTimeGreeting("Relax with some evening snacks 🌇");
+      setTimeCategory("Street Food");
+    } else {
+      setTimeTheme("dark-theme");
+      setTimeGreeting("Craving something tasty tonight? 🌙");
+      setTimeCategory("Main Course"); // Mapping to Dinner/Late Night
+    }
+  }, []);
+
+  useEffect(() => {
+    detectTimeTheme();
+    // Refresh theme every 10 minutes
+    const interval = setInterval(detectTimeTheme, 600000);
+    return () => clearInterval(interval);
+  }, [detectTimeTheme]);
 
   const addToCart = async (itemId) => {
     if (!cartItems[itemId]) {
@@ -23,9 +63,9 @@ const StoreContextProvider = (props) => {
         { headers: { token } }
       );
       if (response.data.success) {
-        toast.success("item Added to Cart")
+        toast.success(response.data.message);
       } else {
-        toast.error("Something went wrong")
+        toast.error(response.data.message);
       }
     }
   };
@@ -39,9 +79,9 @@ const StoreContextProvider = (props) => {
         { headers: { token } }
       );
       if (response.data.success) {
-        toast.success("item Removed from Cart")
+        toast.success(response.data.message);
       } else {
-        toast.error("Something went wrong")
+        toast.error(response.data.message);
       }
     }
   };
@@ -60,11 +100,20 @@ const StoreContextProvider = (props) => {
   };
 
   const fetchFoodList = async () => {
-    const response = await axios.get(url + "/api/food/list");
-    if (response.data.success) {
-      setFoodList(response.data.data);
-    } else {
-      alert("Error! Products are not fetching..");
+    setLoading(true);
+    try {
+      const response = await axios.get(url + "/api/food/list");
+      console.log("Food API connection successful:", response.data.success);
+      if (response.data.success) {
+        setFoodList(response.data.data);
+        console.log(`Loaded ${response.data.data.length} items from API (Database Synced).`);
+      } else {
+        console.warn("API returned success:false, using fallback local data.");
+      }
+    } catch (error) {
+       console.error("Connection to backend failed. Using local fallback data. Error:", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,7 +123,7 @@ const StoreContextProvider = (props) => {
       {},
       { headers: { token } }
     );
-    setCartItems(response.data.cartData);
+    setCartItems(response.data.cartData || {});
   };
 
   useEffect(() => {
@@ -98,6 +147,14 @@ const StoreContextProvider = (props) => {
     url,
     token,
     setToken,
+    showLogin,
+    setShowLogin,
+    searchQuery,
+    setSearchQuery,
+    timeTheme,
+    timeGreeting,
+    timeCategory,
+    loading
   };
   return (
     <StoreContext.Provider value={contextValue}>

@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     role: { type: String, default:"user" },
     cartData: { type: Object, default: {} },
+    resetPasswordToken: { type: String, default: "" },
+    resetPasswordExpires: { type: Date, default: "" },
   },
   { minimize: false }
 );

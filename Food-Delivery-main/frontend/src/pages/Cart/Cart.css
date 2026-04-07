@@ -1,12 +1,25 @@
 .cart{
-    margin-top: 100px;
+    margin-top: 120px;
+    padding-bottom: 60px;
+}
+
+.cart-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #ff4c24;
+    display: inline-block;
 }
 .cart-items-title{
     display: grid;
-    grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.5fr;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr 0.5fr;
     align-items: center;
-    color: gray;
-    font-size: max(1vw,12px);
+    color: #888;
+    font-size: clamp(12px, 1.2vw, 15px);
+    font-weight: 500;
+    padding: 10px 0;
 }
 .cart-items-item{
     margin: 10px 0px;
@@ -24,10 +37,11 @@
     cursor: pointer;
 }
 .cart-bottom{
-    margin-top: 80px;
+    margin-top: 60px;
     display: flex;
     justify-content: space-between;
-    gap: max(12vw,20px);
+    gap: max(8vw, 20px);
+    align-items: flex-start;
 }
 .cart-total{
     flex: 1;
@@ -46,11 +60,16 @@
 .cart-total button{
     border: none;
     color: white;
-    background-color: tomato;
-    width: max(15vw,200px);
-    padding: 12px 0px;
-    border-radius: 4px;
+    background-color: #ff4c24;
+    width: 100%; /* Changed to 100% to fill container correctly */
+    padding: 14px 24px;
+    border-radius: 8px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: 0.3s;
+    margin-top: 10px;
+    box-shadow: 0 4px 12px rgba(255, 76, 36, 0.2);
 }
 .cart-promocode{
     flex: 1;
@@ -80,14 +99,90 @@
     color: white;
     border-radius: 4px;
 }
-@media (max-width:750px) {
-    .cart-bottom{
+@media (max-width: 900px) {
+    .cart {
+        margin-top: 90px;
+    }
+}
+
+@media (max-width: 750px) {
+    .cart {
+        margin-top: 80px;
+    }
+    .cart-bottom {
         flex-direction: column-reverse;
+        gap: 30px;
     }
-    .cart-promocode{
+    .cart-promocode {
         justify-content: start;
+        width: 100%;
     }
-    .cart-items-item p{
+    .cart-items-item p {
         padding-left: 10px;
+    }
+    .cart-total button {
+        width: 100%;
+    }
+    .cart-promocode-input button {
+        width: max(30vw, 120px);
+    }
+}
+
+@media (max-width: 600px) {
+    .cart {
+        margin-top: 80px;
+    }
+    .cart-items-title {
+        display: none; /* Hide headers on small mobile */
+    }
+    .cart-items-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 0;
+        position: relative;
+    }
+    .cart-items-item img {
+        width: 70px;
+        height: 70px;
+        border-radius: 12px;
+        object-fit: cover;
+    }
+    .cart-items-item p {
+        padding: 0;
+        font-size: 14px;
+        margin: 2px 0;
+    }
+    .cart-items-item .cross {
+        position: absolute;
+        right: 0;
+        top: 15px;
+        font-size: 18px;
+        color: #ff4c24;
+    }
+    /* Simple Price Breakdown on Mobile */
+    .cart-items-item p:nth-of-type(2), 
+    .cart-items-item p:nth-of-type(3),
+    .cart-items-item p:nth-of-type(4) {
+        display: none; /* Hide individual columns to stack info */
+    }
+    /* Re-inject info in a stacked way via CSS Content if needed, 
+       but for now we should modify JSX for a better 2-view approach. */
+}
+
+@media (max-width: 480px) {
+    .cart {
+        margin-top: 72px;
+    }
+    .cart-items-title {
+        grid-template-columns: 1fr 1.5fr 0.8fr 0.8fr 0.8fr 0.5fr;
+        font-size: 11px;
+    }
+    .cart-items-item img {
+        width: 40px;
+    }
+    .cart-bottom {
+        flex-direction: column !important; /* Standard column for small phones */
     }
 }

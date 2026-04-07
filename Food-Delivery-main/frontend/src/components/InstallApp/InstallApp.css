@@ -1,0 +1,103 @@
+
+.install-app-container {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 10001; /* Above almost everything else */
+    animation: slideUp 0.8s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.install-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #ff4c24;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(255, 76, 36, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.install-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(255, 76, 36, 0.4);
+    background: #232323; /* Changes to black for dynamic effect */
+}
+
+/* Pulse animation around the button */
+.install-btn::before {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+    transition: 0.5s;
+    pointer-events: none;
+    transform: scale(0);
+}
+
+.install-btn:hover::before {
+    transform: scale(1);
+}
+
+.install-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.install-icon svg {
+    width: 20px;
+    height: 20px;
+    animation: iconBounce 2s infinite ease-in-out;
+}
+
+@keyframes iconBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+.install-btn span {
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .install-app-container {
+        bottom: 20px;
+        left: 20px;
+    }
+
+    .install-btn {
+        padding: 10px 20px;
+    }
+
+    .install-btn span {
+        font-size: 13px;
+        display: none; /* Only show icon on very small screen if desired, 
+                         but for now keep it visible until screen is very small */
+    }
+
+    .install-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* If the user already has it installed, hide it (logic handled in JS) */

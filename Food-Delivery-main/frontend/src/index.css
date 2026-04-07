@@ -1,29 +1,120 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
-*{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: Outfit;
+  font-family: 'Outfit', sans-serif;
   scroll-behavior: smooth;
 }
-body{
-  min-height: 100vh;
+
+:root {
+  /* CLEAN LIGHT THEME VARIABLES */
+  --bg-color: #ffffff;
+  --secondary-bg: #f8fafc;
+  --text-primary: #000000;
+  --text-secondary: #475569;
+  --card-bg: #ffffff;
+  --nav-bg: rgba(255, 255, 255, 0.98);
+  --brand-color: #ff4c24;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --transition-speed: 0.3s;
 }
-a{
+
+/* Redefine individual theme classes to all be LIGHT for consistency as requested */
+.morning-theme, .warm-theme, .evening-theme, .dark-theme, .light-theme {
+  --bg-color: #ffffff;
+  --secondary-bg: #f8fafc;
+  --text-primary: #000000;
+  --text-secondary: #475569;
+  --card-bg: #ffffff;
+  --nav-bg: rgba(255, 255, 255, 0.98);
+  --border-color: #e2e8f0;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--secondary-bg);
+  color: var(--text-primary);
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+a {
   text-decoration: none;
   color: inherit;
 }
-.app{
-  width: 80%;
+
+.app {
+  width: 100%;
+}
+
+.container, .cart, .place-order, .my-orders, .verify {
+  width: 82%;
   margin: auto;
 }
 
-@keyframes fadeIn{
-  0%{
-    opacity: 0;
+/* Global Component Fixes */
+.navbar {
+  background-color: var(--nav-bg) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+}
+
+.navbar-menu a, .navbar-menu li {
+  color: var(--text-primary) !important;
+}
+
+.navbar-menu a:hover {
+  color: var(--brand-color) !important;
+}
+
+.food-item {
+  background-color: var(--card-bg) !important;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  transition: all var(--transition-speed);
+}
+
+.food-item:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-md);
+}
+
+.food-item-info p {
+  color: var(--text-secondary) !important;
+}
+
+button {
+  transition: all var(--transition-speed);
+}
+
+button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 1050px) {
+  .container, .cart, .place-order, .my-orders, .verify {
+    width: 92%;
   }
-  100%{
-    opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .container, .cart, .place-order, .my-orders, .verify {
+    width: 96%;
   }
+}
+
+@media (max-width: 480px) {
+  .container, .cart, .place-order, .my-orders, .verify {
+    width: 98%;
+  }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }

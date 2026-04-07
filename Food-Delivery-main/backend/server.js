@@ -6,20 +6,26 @@ import userRouter from "./routes/userRoute.js";
 import "dotenv/config";
 import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
-import aiRouter from "./routes/aiRoute.js";
-import dotenv from "dotenv";
-dotenv.config();
-console.log("Mongo URL from env:", process.env.MONGO_URL);
+import chatbotRouter from "./routes/chatbotRoute.js";
+import contactRouter from "./routes/contactRoute.js";
+import groupOrderRouter from "./routes/groupOrderRoute.js";
+import { bootstrapAdmin } from "./config/bootstrapAdmin.js";
+
+
 // app config
 const app = express();
-const port = process.env.PORT || 4000;
+const port =process.env.PORT || 4000;
 
 //middlewares
 app.use(express.json());
 app.use(cors());
 
 // DB connection
-connectDB();
+connectDB().then(async () => {
+    // Bootstrap Admin account
+    await bootstrapAdmin();
+});
+
 
 // api endpoints
 app.use("/api/food", foodRouter);
@@ -27,7 +33,9 @@ app.use("/images", express.static("uploads"));
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
-app.use("/api/ai", aiRouter);
+app.use("/api/chatbot", chatbotRouter);
+app.use("/api/contact", contactRouter);
+app.use("/api/group-order", groupOrderRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working");
@@ -36,5 +44,3 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Server Started on port: ${port}`);
 });
-
-export { connectDB };

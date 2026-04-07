@@ -64,3 +64,41 @@
     font-weight: 500;
     cursor: pointer;
 }
+
+.password-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.forgot-password-link {
+    font-size: 0.8rem;
+    color: tomato;
+    cursor: pointer;
+    align-self: flex-end;
+    font-weight: 600;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+.spinner-small {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.login-popup-switch {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
