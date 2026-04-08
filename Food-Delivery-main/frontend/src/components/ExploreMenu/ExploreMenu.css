@@ -1,55 +1,173 @@
-.explore-menu{
+.explore-menu {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding: 20px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
 }
-.explore-menu h1{
-    color: #262626;
-    font-weight: 500;
-}
-.explore-menu-text{
-    max-width: 60%;
-    columns: #808080;
-}
-.explore-menu-list{
+
+.explore-menu-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 30px;
-    text-align: center;
-    margin: 20px 0px;
-    overflow-x: scroll;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    gap: 20px;
 }
-.explore-menu-list::-webkit-scrollbar{
+
+.explore-menu h1 {
+    color: #2b2b2b;
+    font-weight: 700;
+    font-size: clamp(24px, 3vw, 32px);
+    margin: 0;
+}
+
+.explore-menu-text {
+    max-width: 80%;
+    color: #676767;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+/* ⬅️➡️ Scroll Buttons */
+.explore-menu-btns {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 5px;
+}
+
+.scroll-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #2b2b2b;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.scroll-btn:hover {
+    background: #ff4c24;
+    color: white;
+    border-color: #ff4c24;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(255, 76, 36, 0.2);
+}
+
+/* 🎯 Single Row Layout */
+.explore-menu-list-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden; /* Hide overflow outside the list */
+}
+
+.explore-menu-list {
+    display: flex; /* Single row */
+    flex-wrap: nowrap; /* Prevent wrapping specifically requested */
+    align-items: center;
+    gap: 20px; /* Spacing between items requested */
+    margin: 20px 0px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    scroll-behavior: smooth; /* Smooth scroll specifically requested */
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch; /* Momentum scroll on iOS */
+}
+
+/* 📱 Hide Scrollbar specifically requested */
+.explore-menu-list::-webkit-scrollbar {
     display: none;
 }
-.explore-menu-list-item img{
-    width: 7.5vw;
-    min-width: 80px;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: 0.2s;
+
+.explore-menu-list {
+    scrollbar-width: none; /* Firefox */
 }
-.explore-menu-list-item p{
-    margin-top: 10px;
-    color:#747474;
-    font-size: clamp(14px, 1.4vw, 18px); /* Fluid font size */
+
+/* 🍽️ Individual Card Styling */
+.explore-menu-list-item {
+    flex-shrink: 0; /* Important for horizontal scrolling */
+    width: 180px; /* Specifically requested */
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
     cursor: pointer;
-    white-space: nowrap; /* Keep it on one line but it overflows to scroll */
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.03);
 }
-.explore-menu hr{
-    margin: 10px 0px;
-    height: 2px;
-    background-color: #e2e2e2;
+
+/* 🖼️ Image Styling Specifically Requested */
+.explore-menu-list-item img {
+    width: 100%; /* Specifically requested */
+    height: 140px; /* Specifically requested */
+    object-fit: cover; /* Specifically requested */
+    border-radius: 10px; /* Specifically requested */
+    transition: 0.3s ease;
+}
+
+.explore-menu-list-item p {
+    margin-top: 12px;
+    color: #49557e;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* ✨ Hover Effect specifically requested */
+.explore-menu-list-item:hover {
+    transform: scale(1.05); /* Specifically requested */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.explore-menu-list-item.active {
+    border: 2px solid #ff4c24;
+    background-color: #fff8f6;
+}
+
+.explore-menu-list-item.active p {
+    color: #ff4c24;
+    font-weight: 600;
+}
+
+.explore-menu hr {
+    margin: 20px 0px;
+    height: 1.5px;
+    background-color: #f0f0f0;
     border: none;
 }
-.explore-menu-list-item .active{
-    border: 4px solid tomato;
-    padding: 2px;
+
+/* 📱 Responsiveness */
+@media (max-width: 1050px) {
+    .explore-menu {
+        padding: 20px 30px;
+    }
 }
-@media (max-width:1050px) {
-    .explore-menu-text{
-        max-width: 100%;
-        font-size: 14px;
+
+@media (max-width: 750px) {
+    .explore-menu {
+        padding: 20px 15px;
+    }
+    .explore-menu-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .explore-menu-btns {
+        display: none; /* Hide buttons on mobile where swipe is natural */
+    }
+    .explore-menu-list-item {
+        width: 150px; /* Smaller cards on small mobile screens */
+    }
+    .explore-menu-list-item img {
+        height: 110px;
     }
 }

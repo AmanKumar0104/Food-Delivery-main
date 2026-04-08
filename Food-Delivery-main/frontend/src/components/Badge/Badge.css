@@ -1,0 +1,83 @@
+/* 🛸 Premium Badge Component */
+.rs-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    
+    /* 📱 Responsiveness with clamp */
+    font-size: clamp(10px, 1vw, 13px);
+    padding: 4px 10px;
+    
+    /* 🎨 Styling */
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    
+    /* ✨ Default Glowy Orange Theme */
+    background: linear-gradient(135deg, #ff8c00 0%, #ff4500 100%);
+    box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
+    
+    /* 💡 Transition & Animation */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: pulse 2s infinite ease-in-out;
+    cursor: pointer;
+}
+
+/* 🟢 Green/Trending Theme */
+.rs-badge.green {
+    background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
+    box-shadow: 0 4px 12px rgba(0, 200, 83, 0.3);
+}
+
+/* 🔵 Neon Blue Theme */
+.rs-badge.neon {
+    background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+    box-shadow: 0 4px 12px rgba(58, 123, 213, 0.3);
+}
+
+/* 🌫️ Glassmorphism Theme */
+.rs-badge.glass {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #262626;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ✨ Hover Effect */
+.rs-badge:hover {
+    transform: scale(1.15) rotate(2deg);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    z-index: 12;
+}
+
+/* 💡 Pulse Animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.08);
+        filter: brightness(1.2);
+        box-shadow: 0 0 20px rgba(255, 69, 0, 0.5); /* Stronger glow mid-pulse */
+    }
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+}
+
+/* Adjustments for the header-specific inline usage if needed */
+.rs-badge.static {
+    position: static;
+    margin-left: 10px;
+    animation: none; /* No pulse for static header badge */
+}

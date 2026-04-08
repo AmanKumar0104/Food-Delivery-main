@@ -15,6 +15,7 @@ const Navbar = () => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("isLoggedIn");
     setToken("");
     setCartItems({}); // Clear cart upon logout
     toast.success("Logged out successfully");

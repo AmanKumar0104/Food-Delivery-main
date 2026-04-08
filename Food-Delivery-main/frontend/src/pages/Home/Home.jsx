@@ -3,19 +3,18 @@ import './Home.css'
 import Header from '../../components/Header/Header'
 import ExploreMenu from '../../components/ExploreMenu/ExploreMenu'
 import FoodDisplay from '../../components/FoodDisplay/FoodDisplay'
-import TimeRecommendations from '../../components/TimeRecommendations/TimeRecommendations'
+import RecommendedSection from '../../components/RecommendedSection/RecommendedSection'
 import { useContext } from 'react'
 import { StoreContext } from '../../context/StoreContext'
 
 const Home = () => {
   const [category, setCategory] = useState("All");
-  const { url } = useContext(StoreContext);
 
   return (
-    <div>
+    <div className="bg-white">
       <Header />
-      <div className="container">
-        <TimeRecommendations />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 py-12 transition-all duration-500">
+        <RecommendedSection />
         <ExploreMenu category={category} setCategory={setCategory} />
         <FoodDisplay category={category} />
       </div>

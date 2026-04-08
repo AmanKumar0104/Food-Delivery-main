@@ -1,17 +1,16 @@
 import axios from "axios";
 import { createContext, useEffect, useState, useCallback } from "react";
 import { toast } from "react-toastify";
-import { food_list as local_food_list } from "../assets/frontend_assets/assets";
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
-  const url = "http://localhost:4000";
+  const url = "http://localhost:5000";
   const [token, setToken] = useState("");
   
   // Use original local list as initial state
-  const [food_list, setFoodList] = useState(local_food_list);
+  const [food_list, setFoodList] = useState([]);
   const [showLogin, setShowLogin] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);

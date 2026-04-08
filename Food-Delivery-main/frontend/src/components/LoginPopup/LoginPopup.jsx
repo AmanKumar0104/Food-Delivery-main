@@ -47,10 +47,11 @@ const LoginPopup = ({ setShowLogin }) => {
           if (currentState === "Login") {
             setToken(response.data.token);
             localStorage.setItem("token", response.data.token);
-            toast.success("Login Successfully!");
+            localStorage.setItem("isLoggedIn", "true"); // User requirement: Explicitly store state
+            toast.success("Welcome back! Login Successful!");
             setShowLogin(false);
           } else {
-            toast.success("Registration Successful! Please login now.");
+            toast.success("Welcome to Tomato! Registration Successful!");
             setCurrentState("Login");
             setData(prev => ({ ...prev, password: "" }));
           }

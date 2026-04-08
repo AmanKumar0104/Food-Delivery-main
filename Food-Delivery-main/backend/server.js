@@ -1,3 +1,4 @@
+/** 🔍 DIAGNOSTIC: Debugging User Routes **/
 import express from "express";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
@@ -14,7 +15,7 @@ import { bootstrapAdmin } from "./config/bootstrapAdmin.js";
 
 // app config
 const app = express();
-const port =process.env.PORT || 4000;
+const port =process.env.PORT || 5000;
 
 //middlewares
 app.use(express.json());
@@ -43,4 +44,12 @@ app.get("/", (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server Started on port: ${port}`);
+  if (userRouter && userRouter.stack) {
+    console.log("User Routes registered:");
+    userRouter.stack.forEach(r => {
+        if (r.route) {
+            console.log(` - POST ${r.route.path}`);
+        }
+    });
+  }
 });

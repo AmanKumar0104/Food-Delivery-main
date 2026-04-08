@@ -20,8 +20,7 @@ const FoodItem = ({ id, name, price, description, image, rating }) => {
             className="food-item-image" 
             loading="lazy"
             onError={(e) => {
-              const localIndex = (parseInt(id) - 1) % (assets.food_images?.length || 32);
-              e.target.src = assets.food_images ? assets.food_images[localIndex] : "";
+              e.target.src = "https://via.placeholder.com/200x150/1a1d27/ff5722?text=No+Image";
               e.target.onerror = null; 
             }}
           />

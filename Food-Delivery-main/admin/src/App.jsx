@@ -13,7 +13,7 @@ import Login from "./components/Login/Login";
 import { StoreContext } from "./context/StoreContext";
 
 const App = () => {
-  const url = "http://localhost:4000";
+  const url = "http://localhost:5000";
   const { isSidebarOpen } = React.useContext(StoreContext);
 
   return (

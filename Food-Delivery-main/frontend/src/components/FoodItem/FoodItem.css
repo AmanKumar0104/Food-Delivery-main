@@ -45,7 +45,7 @@
     background-color: #fcebeb;
     padding: 2px 8px;
     border-radius: 10px;
-    color: #ff4c4c;
+    color: #ff4c24;
     font-weight: 600;
 }
 .food-item-desc{
@@ -53,7 +53,7 @@
     font-size: 12px;
 }
 .food-item-price{
-    color: #ff4c4c;
+    color: #ff4c24;
     font-size: 24px;
     font-weight: 700;
     margin: 15px 0px;

@@ -48,7 +48,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const App = () => {
-  const { showLogin, setShowLogin, timeTheme } = useContext(StoreContext);
+  const { showLogin, setShowLogin, timeTheme, token } = useContext(StoreContext);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
@@ -81,9 +81,10 @@ const App = () => {
           <Route path="/group-lobby" element={<Navigate to="/group-order" replace />} />
           <Route path="/admin" element={<AdminRedirect />} />
         </Routes>
-        <ChatBot url="http://localhost:4000" isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
+        
+        <ChatBot url="http://localhost:5000" isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
         <InstallApp />
-        <ContactUs url="http://localhost:4000" />
+        <ContactUs url="http://localhost:5000" />
         <ScrollButtons isChatOpen={isChatOpen} />
       </div>
       <Footer />
